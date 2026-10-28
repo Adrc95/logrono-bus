@@ -6,6 +6,8 @@ Aplicación Logroño Bus
 ![kotlin-version](https://img.shields.io/badge/kotlin-2.4.21-blue?logo=kotlin)
 ![compose-multiplatform](https://img.shields.io/badge/compose%20multiplatform-1.13.0--alpha02-blue)
 ![license](https://img.shields.io/badge/license-Apache%202.0-blue)
+![build](https://github.com/Adrc95/logrono-bus/actions/workflows/build.yml/badge.svg)
+[![web demo](https://img.shields.io/badge/demo-adrc95.github.io%2Flogrono--bus-ff2d55)](https://adrc95.github.io/logrono-bus/)
 
 Logroño Bus es una app para consultar los autobuses urbanos de Logroño. Muestra las próximas salidas
 de las paradas que guardas en tus favoritos, las paradas que tienes cerca, la posición del bus en el
