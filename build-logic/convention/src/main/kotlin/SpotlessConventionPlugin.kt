@@ -37,8 +37,7 @@ class  SpotlessConventionPlugin : Plugin<Project> {
                     target("src/**/*.kts")
                     licenseHeaderFile(
                         rootProject.file("spotless/license.kt"),
-                        // The first line that is neither blank nor part of a block comment.
-                        "(^(?!\\s*$)(?![\\/ ]\\*).*$)"
+                        ConventionPatterns.FIRST_LINE_AFTER_COMMENTS,
                     )
                     trimTrailingWhitespace()
                     endWithNewline()
