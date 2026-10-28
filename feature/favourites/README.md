@@ -62,7 +62,6 @@ graph TB
   :core:domain --> :core:common
   :core:domain --> :core:model
   :core:domain -.-> :core:testing
-  :core:model -.-> :core:testing
   :core:navigation -.-> :core:common
   :core:network --> :core:common
   :core:network -.-> :core:domain
