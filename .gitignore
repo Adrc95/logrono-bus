@@ -1,0 +1,45 @@
+*.iml
+.kotlin
+.gradle
+**/build/
+xcuserdata
+!src/**/build/
+local.properties
+.idea
+.DS_Store
+captures
+.externalNativeBuild
+.cxx
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+node_modules/
+
+# Release signing: never commit the keystore or its passwords
+keystore.properties
+*.jks
+
+.hotswan/
+
+# R8 deobfuscation map: never share it, it undoes the obfuscation
+androidApp/mapping/
+*.apk
+*.aab
+
+# Local tooling, not part of the project
+tools/
+
+# Build/runtime leftovers
+*.hprof
+*.log
+*.keystore
+**/DerivedData/
+**/.swiftpm/
+.fleet/
+
+# Local environment files
+.env
+.env.*

@@ -1,0 +1,158 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../location/0.20.0-wasm.1/location-0.20.0-wasm.1.module",
+    "group": "org.maplibre.compose",
+    "module": "location",
+    "version": "0.20.0-wasm.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.5.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "wasmJsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "geojson",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "units",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "location-wasm-js-0.20.0-wasm.1.klib",
+          "url": "location-wasm-js-0.20.0-wasm.1.klib",
+          "size": 58324,
+          "sha512": "3dd95fb8b2a26abc08ab605b9b8d72f9372cf77c7c7760c2976675efe009c8882023268434f7c2b96dea5d4472eccedf2cc4ff10ecc4626e29daaea2357d2cc3",
+          "sha256": "8bbcf29eadd30af8cb2235a28497e2fa2a4d706e90305b6baf875a3e495eee33",
+          "sha1": "2c3e1971e6d7d434e469bf1eaf0989181b3839bd",
+          "md5": "ac16656ca33284d63456bdbdf1e825fc"
+        }
+      ]
+    },
+    {
+      "name": "wasmJsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "geojson",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "units",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-js",
+          "version": {
+            "requires": "2026.8.5"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-browser",
+          "version": {
+            "requires": "2026.8.5"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "location-wasm-js-0.20.0-wasm.1.klib",
+          "url": "location-wasm-js-0.20.0-wasm.1.klib",
+          "size": 58324,
+          "sha512": "3dd95fb8b2a26abc08ab605b9b8d72f9372cf77c7c7760c2976675efe009c8882023268434f7c2b96dea5d4472eccedf2cc4ff10ecc4626e29daaea2357d2cc3",
+          "sha256": "8bbcf29eadd30af8cb2235a28497e2fa2a4d706e90305b6baf875a3e495eee33",
+          "sha1": "2c3e1971e6d7d434e469bf1eaf0989181b3839bd",
+          "md5": "ac16656ca33284d63456bdbdf1e825fc"
+        }
+      ]
+    },
+    {
+      "name": "wasmJsSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "files": [
+        {
+          "name": "location-wasm-js-0.20.0-wasm.1-sources.jar",
+          "url": "location-wasm-js-0.20.0-wasm.1-sources.jar",
+          "size": 11838,
+          "sha512": "1d6412115f1c52a16710cafba62f38f5c0b03d307d59f628008373ad720949cd3b07c7aecc2000c9a32b5a29c12c6a6f79138cfc3119a158df44c38d1d71cfe2",
+          "sha256": "19f6abdc2db552dba3012f55ab4565ee254001e92a569bd3602114332770bdeb",
+          "sha1": "3d70327f9a5b3f1f771bd3eb0095b80b22733dc6",
+          "md5": "83c9bf9cf4985df26af3e039e886c544"
+        }
+      ]
+    }
+  ]
+}

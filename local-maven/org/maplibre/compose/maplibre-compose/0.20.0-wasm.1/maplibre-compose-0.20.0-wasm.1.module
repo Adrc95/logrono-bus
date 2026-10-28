@@ -1,0 +1,525 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.maplibre.compose",
+    "module": "maplibre-compose",
+    "version": "0.20.0-wasm.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.5.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "metadataApiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "dependencies": [
+        {
+          "group": "org.maplibre.compose",
+          "module": "location",
+          "version": {
+            "requires": "0.20.0-wasm.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.androidx.lifecycle",
+          "module": "lifecycle-runtime-compose",
+          "version": {
+            "requires": "2.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-io-core",
+          "version": {
+            "requires": "0.9.1"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "geojson",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "units",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.13.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.components",
+          "module": "components-resources",
+          "version": {
+            "requires": "1.13.0-alpha02"
+          }
+        },
+        {
+          "group": "be.digitalia.compose.htmlconverter",
+          "module": "htmlconverter",
+          "version": {
+            "requires": "1.1.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "atomicfu",
+          "version": {
+            "requires": "0.33.0"
+          }
+        },
+        {
+          "group": "org.maplibre.nativeffi",
+          "module": "maplibre-native-ffi-runtime-metal",
+          "version": {
+            "requires": "0.202609.0"
+          }
+        },
+        {
+          "group": "org.maplibre.nativeffi",
+          "module": "maplibre-native-ffi",
+          "version": {
+            "requires": "0.202609.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "maplibre-compose-metadata-0.20.0-wasm.1.jar",
+          "url": "maplibre-compose-0.20.0-wasm.1.jar",
+          "size": 324537,
+          "sha512": "5cf0e31bb7d06a760ce7f4664f7488e3c633e7e615dddc2633a68a48ef7d166ec909562a96b070708726ab47fb83010b3507859760344703f7132065ac8fc78c",
+          "sha256": "b9289bd7bce54329958f26fac74c19016d07c0cd0e6b743ca730d2dede218ac5",
+          "sha1": "fc9c363e5b08d4698782965cea52c0325cf9ebbf",
+          "md5": "85e20c393ff7b8a3c7aa281d13cbe2c0"
+        }
+      ]
+    },
+    {
+      "name": "metadataSourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "files": [
+        {
+          "name": "maplibre-compose-kotlin-0.20.0-wasm.1-sources.jar",
+          "url": "maplibre-compose-0.20.0-wasm.1-sources.jar",
+          "size": 501472,
+          "sha512": "f93ff98814565de4579918426ca07b4c0ebaa172c3c44cf0818338d17599a7f808bb390d3004f8437d0ddaf4d5617c51c76fe2f7965d89c2e2f354c99e41d6d4",
+          "sha256": "6a59c8908fced37f84b38e740ec0d9049859299775227b8d5b606392dfdd3b1e",
+          "sha1": "5303b5d5895f19c27b916a320d3c714f28994d72",
+          "md5": "d51f2bcbae5a3d3712b552332b654bd6"
+        }
+      ]
+    },
+    {
+      "name": "androidApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-android/0.20.0-wasm.1/maplibre-compose-android-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-android",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "androidRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-android/0.20.0-wasm.1/maplibre-compose-android-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-android",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "androidSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-android/0.20.0-wasm.1/maplibre-compose-android-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-android",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "iosArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-iosarm64/0.20.0-wasm.1/maplibre-compose-iosarm64-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-iosarm64",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "iosArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-iosarm64/0.20.0-wasm.1/maplibre-compose-iosarm64-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-iosarm64",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "iosArm64ResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresources",
+        "org.gradle.usage": "kotlin-multiplatformresources",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-iosarm64/0.20.0-wasm.1/maplibre-compose-iosarm64-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-iosarm64",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "iosArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-iosarm64/0.20.0-wasm.1/maplibre-compose-iosarm64-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-iosarm64",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-iossimulatorarm64/0.20.0-wasm.1/maplibre-compose-iossimulatorarm64-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-iossimulatorarm64",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-iossimulatorarm64/0.20.0-wasm.1/maplibre-compose-iossimulatorarm64-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-iossimulatorarm64",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64ResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresources",
+        "org.gradle.usage": "kotlin-multiplatformresources",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-iossimulatorarm64/0.20.0-wasm.1/maplibre-compose-iossimulatorarm64-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-iossimulatorarm64",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-iossimulatorarm64/0.20.0-wasm.1/maplibre-compose-iossimulatorarm64-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-iossimulatorarm64",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "jsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-js/0.20.0-wasm.1/maplibre-compose-js-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-js",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "jsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-js/0.20.0-wasm.1/maplibre-compose-js-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-js",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "jsSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-js/0.20.0-wasm.1/maplibre-compose-js-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-js",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "jsResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresourcesjs",
+        "org.gradle.usage": "kotlin-multiplatformresourcesjs",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-js/0.20.0-wasm.1/maplibre-compose-js-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-js",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-jvm/0.20.0-wasm.1/maplibre-compose-jvm-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-jvm",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-jvm/0.20.0-wasm.1/maplibre-compose-jvm-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-jvm",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "jvmSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-jvm/0.20.0-wasm.1/maplibre-compose-jvm-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-jvm",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "wasmJsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-wasm-js/0.20.0-wasm.1/maplibre-compose-wasm-js-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-wasm-js",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "wasmJsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-wasm-js/0.20.0-wasm.1/maplibre-compose-wasm-js-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-wasm-js",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "wasmJsSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-wasm-js/0.20.0-wasm.1/maplibre-compose-wasm-js-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-wasm-js",
+        "version": "0.20.0-wasm.1"
+      }
+    },
+    {
+      "name": "wasmJsResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresourcesjs",
+        "org.gradle.usage": "kotlin-multiplatformresourcesjs",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "available-at": {
+        "url": "../../maplibre-compose-wasm-js/0.20.0-wasm.1/maplibre-compose-wasm-js-0.20.0-wasm.1.module",
+        "group": "org.maplibre.compose",
+        "module": "maplibre-compose-wasm-js",
+        "version": "0.20.0-wasm.1"
+      }
+    }
+  ]
+}

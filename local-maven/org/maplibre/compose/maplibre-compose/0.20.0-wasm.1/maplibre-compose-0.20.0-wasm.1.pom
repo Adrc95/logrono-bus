@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- This module was also published with a richer model, Gradle metadata,  -->
+  <!-- which should be used instead. Do not delete the following line which  -->
+  <!-- is to indicate to Gradle or any Gradle module metadata file consumer  -->
+  <!-- that they should prefer consuming it instead. -->
+  <!-- do_not_remove: published-with-gradle-metadata -->
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.maplibre.compose</groupId>
+  <artifactId>maplibre-compose</artifactId>
+  <version>0.20.0-wasm.1</version>
+  <name>MapLibre Compose</name>
+  <description>Add interactive vector tile maps to your Compose app</description>
+  <url>https://github.com/maplibre/maplibre-compose</url>
+  <licenses>
+    <license>
+      <name>BSD-3-Clause</name>
+      <url>https://opensource.org/license/bsd-3-clause</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>maplibre</id>
+      <name>MapLibre</name>
+      <url>https://github.com/maplibre/</url>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/maplibre/maplibre-compose.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/maplibre/maplibre-compose.git</developerConnection>
+    <url>https://github.com/maplibre/maplibre-compose</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.maplibre.compose</groupId>
+      <artifactId>location</artifactId>
+      <version>0.20.0-wasm.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.androidx.lifecycle</groupId>
+      <artifactId>lifecycle-runtime-compose</artifactId>
+      <version>2.11.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-io-core</artifactId>
+      <version>0.9.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.maplibre.spatialk</groupId>
+      <artifactId>geojson</artifactId>
+      <version>0.7.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.maplibre.spatialk</groupId>
+      <artifactId>units</artifactId>
+      <version>0.7.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>2.4.20</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.compose.foundation</groupId>
+      <artifactId>foundation</artifactId>
+      <version>1.13.0-alpha02</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.compose.components</groupId>
+      <artifactId>components-resources</artifactId>
+      <version>1.13.0-alpha02</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>be.digitalia.compose.htmlconverter</groupId>
+      <artifactId>htmlconverter</artifactId>
+      <version>1.1.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-coroutines-core</artifactId>
+      <version>1.11.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>atomicfu</artifactId>
+      <version>0.33.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.maplibre.nativeffi</groupId>
+      <artifactId>maplibre-native-ffi-runtime-metal</artifactId>
+      <version>0.202609.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.maplibre.nativeffi</groupId>
+      <artifactId>maplibre-native-ffi</artifactId>
+      <version>0.202609.0</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</project>

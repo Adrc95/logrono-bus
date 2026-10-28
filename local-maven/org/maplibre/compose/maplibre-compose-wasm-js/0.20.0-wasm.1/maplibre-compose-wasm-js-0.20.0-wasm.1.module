@@ -1,0 +1,337 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../maplibre-compose/0.20.0-wasm.1/maplibre-compose-0.20.0-wasm.1.module",
+    "group": "org.maplibre.compose",
+    "module": "maplibre-compose",
+    "version": "0.20.0-wasm.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.5.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "wasmJsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.maplibre.compose",
+          "module": "location",
+          "version": {
+            "requires": "0.20.0-wasm.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.androidx.lifecycle",
+          "module": "lifecycle-runtime-compose",
+          "version": {
+            "requires": "2.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-io-core",
+          "version": {
+            "requires": "0.9.1"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "geojson",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "units",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "maplibre-compose-wasm-js-0.20.0-wasm.1.klib",
+          "url": "maplibre-compose-wasm-js-0.20.0-wasm.1.klib",
+          "size": 1962902,
+          "sha512": "d1210a9d1a7558c9d7206adbb1946c10a48768c3027c713527120752e9f338f8f292457e0a1fb2a8dece709e342e87f836171191ec5652aae69235a707aa620a",
+          "sha256": "336767e0b545471d243625a97397433259fcd184b24fc1a32a7184f040f00607",
+          "sha1": "762db46636991975bb6108dd400c30b928ea0074",
+          "md5": "75fa22a19b170d9de455ffa3b8e60383"
+        }
+      ]
+    },
+    {
+      "name": "wasmJsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.maplibre.compose",
+          "module": "location",
+          "version": {
+            "requires": "0.20.0-wasm.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.androidx.lifecycle",
+          "module": "lifecycle-runtime-compose",
+          "version": {
+            "requires": "2.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-io-core",
+          "version": {
+            "requires": "0.9.1"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "geojson",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "units",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-js",
+          "version": {
+            "requires": "2026.8.5"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-browser",
+          "version": {
+            "requires": "2026.8.5"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.13.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.components",
+          "module": "components-resources",
+          "version": {
+            "requires": "1.13.0-alpha02"
+          }
+        },
+        {
+          "group": "be.digitalia.compose.htmlconverter",
+          "module": "htmlconverter",
+          "version": {
+            "requires": "1.1.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "atomicfu",
+          "version": {
+            "requires": "0.33.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "maplibre-compose-wasm-js-0.20.0-wasm.1.klib",
+          "url": "maplibre-compose-wasm-js-0.20.0-wasm.1.klib",
+          "size": 1962902,
+          "sha512": "d1210a9d1a7558c9d7206adbb1946c10a48768c3027c713527120752e9f338f8f292457e0a1fb2a8dece709e342e87f836171191ec5652aae69235a707aa620a",
+          "sha256": "336767e0b545471d243625a97397433259fcd184b24fc1a32a7184f040f00607",
+          "sha1": "762db46636991975bb6108dd400c30b928ea0074",
+          "md5": "75fa22a19b170d9de455ffa3b8e60383"
+        }
+      ]
+    },
+    {
+      "name": "wasmJsSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "files": [
+        {
+          "name": "maplibre-compose-wasm-js-0.20.0-wasm.1-sources.jar",
+          "url": "maplibre-compose-wasm-js-0.20.0-wasm.1-sources.jar",
+          "size": 379711,
+          "sha512": "7dd31f406e6e2eb2f850d3ced35d2756603e8fe2e3e2e2ddc96b7a940756498b850651021c3648747cae2c96729a8e11acc0d56f24a669d67805147cbd80482f",
+          "sha256": "ed179fc428f93608fcc4aed6fdf938b7451cf23cb283b1b439ab49c69293e0f5",
+          "sha1": "b2e57c86ba5a54b1fbb3bdae598f226475fd0e23",
+          "md5": "ea3b9cec85d27b056c5a90250bb9bad8"
+        }
+      ]
+    },
+    {
+      "name": "wasmJsResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresourcesjs",
+        "org.gradle.usage": "kotlin-multiplatformresourcesjs",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.maplibre.compose",
+          "module": "location",
+          "version": {
+            "requires": "0.20.0-wasm.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.androidx.lifecycle",
+          "module": "lifecycle-runtime-compose",
+          "version": {
+            "requires": "2.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-io-core",
+          "version": {
+            "requires": "0.9.1"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "geojson",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.maplibre.spatialk",
+          "module": "units",
+          "version": {
+            "requires": "0.7.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.20"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-js",
+          "version": {
+            "requires": "2026.8.5"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin-wrappers",
+          "module": "kotlin-browser",
+          "version": {
+            "requires": "2026.8.5"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.13.0-alpha02"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.components",
+          "module": "components-resources",
+          "version": {
+            "requires": "1.13.0-alpha02"
+          }
+        },
+        {
+          "group": "be.digitalia.compose.htmlconverter",
+          "module": "htmlconverter",
+          "version": {
+            "requires": "1.1.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.11.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "atomicfu",
+          "version": {
+            "requires": "0.33.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "maplibre-compose-0.20.0-wasm.1.kotlin_resources.zip",
+          "url": "maplibre-compose-wasm-js-0.20.0-wasm.1-kotlin_resources.kotlin_resources.zip",
+          "size": 70655,
+          "sha512": "c1dd868745019032e10a9b22bffc9fac519f94553f784d42f4f11110d836f576f8ee0187c9898675a4420ad181348e7901946ab349baec2633da3523a540a3b2",
+          "sha256": "ae02364b34ad9ba20baa8e08a02374d9e9bd10598fa2b0adb18e953b43ff3d26",
+          "sha1": "177194558315d0262b98c3f5d17e4807d52b39f1",
+          "md5": "088847eb6fe1b218c8ce70f541dec3e6"
+        }
+      ]
+    }
+  ]
+}
