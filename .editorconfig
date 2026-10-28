@@ -1,0 +1,14 @@
+root = true
+
+[*.{kt,kts}]
+max_line_length = 120
+ktlint_standard_filename = disabled
+ktlint_standard_function-naming = disabled
+ktlint_standard_property-naming = disabled
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+[**/{commonTest,jvmTest,androidTest,androidDeviceTest,iosTest,wasmJsTest,desktopTest}/**/*.kt]
+max_line_length = off
+
+[core/testing/**/*.kt]
+max_line_length = off
