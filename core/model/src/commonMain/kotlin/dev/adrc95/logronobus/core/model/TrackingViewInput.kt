@@ -1,0 +1,35 @@
+/*
+ * Copyright 2026 adrc95 (Adrián Cabrera)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package dev.adrc95.logronobus.core.model
+
+import kotlin.time.Instant
+
+data class TrackingViewInput(
+    val routeStops: List<List<Stop>>,
+    val directionHeadsigns: List<String> = emptyList(),
+    val departure: DepartureTime? = null,
+    val tripId: String? = null,
+    val stopRef: String? = null,
+    val positions: List<BusLocation> = emptyList(),
+    val previousPositions: List<BusLocation> = emptyList(),
+    val predictions: Map<String, Instant> = emptyMap(),
+    val nowMs: Long = 0,
+    val tripCompleted: Boolean = false,
+    val nextBus: DepartureTime? = null,
+    val nextBusKnown: Boolean = false,
+    val preferredVehicleId: String? = null,
+)
