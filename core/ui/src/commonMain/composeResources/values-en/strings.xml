@@ -1,0 +1,198 @@
+<!--
+    Copyright 2026 adrc95 (Adrián Cabrera)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<resources>
+    <string name="cd_track_this_bus">Track this bus</string>
+    <string name="not_live_positions">Not live — last known positions</string>
+    <string name="due">Due</string>
+    <string name="not_available">N/A</string>
+    <string name="countdown_min">%1$d min</string>
+    <string name="tomorrow_at">tomorrow %1$s</string>
+    <string name="late_suffix"> (late)</string>
+    <string name="early_suffix"> (early)</string>
+    <string name="live_time">Live time</string>
+    <string name="updated">Updated %1$s</string>
+    <string name="last_updated_retrying">Last updated %1$s — retrying</string>
+    <string name="time_just_now">just now</string>
+    <string name="time_secs_ago">%1$ds ago</string>
+    <string name="time_mins_ago">%1$dm ago</string>
+    <string name="time_hours_ago">%1$dh ago</string>
+<!-- App / titles -->
+    <string name="app_name">Logroño Bus</string>
+    <string name="title_scan_a_stop">Scan a stop</string>
+    <string name="title_all_buses">All Buses</string>
+    <string name="title_route">Route %1$s</string>
+
+    <!-- Bottom tabs -->
+    <string name="tab_favourites">Stops</string>
+    <string name="tab_nearby">Near me</string>
+    <string name="tab_scan">Scan</string>
+    <string name="tab_buses">Buses</string>
+    <string name="tab_routes">Routes</string>
+
+    <!-- Fares -->
+    <string name="tab_fares">Fares</string>
+    <string name="title_fares">Official fares</string>
+    <string name="fare_municipality_all">All</string>
+    <string name="fare_municipality_logrono">Logroño</string>
+    <string name="fare_municipality_lardero">Lardero</string>
+    <string name="fare_municipality_villamediana">Villamediana</string>
+    <string name="fare_traveller_all">All</string>
+    <string name="fare_traveller_general">Standard</string>
+    <string name="fare_traveller_estudiante">Student</string>
+    <string name="fare_traveller_jubilado">Senior</string>
+    <string name="fare_traveller_fn20">Large family 20%</string>
+    <string name="fare_traveller_fn50">Large family 50%</string>
+    <string name="fare_traveller_nino">Child</string>
+    <string name="fare_traveller_reducida">Reduced</string>
+    <string name="fare_traveller_empleado">Employee</string>
+    <string name="fare_traveller_familiar">Family</string>
+
+    <!-- Map provider switch (the icon above the map) -->
+    <string name="follow_bus">Centre on the bus</string>
+
+    <!-- Stops/Map view switch -->
+    <string name="view_stops">Stops</string>
+    <string name="view_map">Map</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_back">Back</string>
+    <string name="cd_back_to_routes">Back to routes</string>
+    <string name="cd_clear_search">Clear search</string>
+    <string name="cd_collapse">Collapse</string>
+    <string name="cd_exit_search">Exit search</string>
+    <string name="cd_expand">Expand</string>
+    <string name="cd_more_options">More options</string>
+    <string name="cd_refresh_departures">Refresh departures</string>
+    <string name="cd_refresh_nearby">Refresh nearby stops</string>
+    <string name="cd_refresh_bus_positions">Refresh bus positions</string>
+    <string name="cd_refresh_positions">Refresh positions</string>
+    <string name="cd_add_favourite">Add favourite</string>
+    <string name="cd_remove_favourite">Remove favourite</string>
+
+    <!-- All buses map -->
+    <string name="loading_live_buses">Loading live buses…</string>
+    <string name="no_buses_reporting">No buses reporting right now</string>
+    <string name="service_may_not_be_running">Service may not be running</string>
+    <string name="live_feed_unavailable">Live bus feed unavailable</string>
+    <string name="live_feed_unavailable_detail">Buses are probably running — we just can\'t reach the tracking service. Retrying.</string>
+
+    <!-- Scan -->
+    <string name="scan_point_camera">Point your camera at the stop\'s sign</string>
+    <string name="scan_choose_stop">Your stop could not be read. Pick it from the sign:</string>
+    <string name="scan_keep_scanning">Keep scanning</string>
+    <string name="scan_reading">Reading the sign…</string>
+    <string name="scan_finding_stop">Looking for your stop…</string>
+
+    <!-- Nearby -->
+    <string name="location_permission_needed">Location permission needed</string>
+    <string name="location_permission_body">Allow location access to see the bus stops closest to you.</string>
+    <string name="enable_location">Enable location</string>
+    <string name="finding_stops">Finding stops near you…</string>
+    <string name="showing_city_centre">Showing stops near Logroño city centre</string>
+    <string name="towards">Towards %1$s</string>
+    <plurals name="stops_near_you">
+        <item quantity="one">%1$d stop near you</item>
+        <item quantity="other">%1$d stops near you</item>
+    </plurals>
+
+    <!-- Distances -->
+    <string name="distance_m">%1$d m</string>
+    <string name="distance_km">%1$s km</string>
+
+    <!-- Stop / route labels -->
+    <string name="stop_label">Stop %1$s</string>
+
+
+    <!-- A bus whose trip ends at the stop being viewed -->
+    <string name="terminates_here">Ends here</string>
+
+    <!-- The first stop of the direction being browsed: its buses start here -->
+    <string name="starts_here">Starts here</string>
+
+    <!-- Countdown / delay -->
+    <!-- The next bus of a line whose service day is over: "tomorrow 06:53". -->
+    <string name="min_late">%1$d min late</string>
+    <string name="min_early">%1$d min early</string>
+    <string name="on_time">On time</string>
+
+    <!-- Tracking -->
+    <string name="track_bus">Track Bus</string>
+    <string name="next_stop">Next stop</string>
+    <string name="at_stop">At the stop</string>
+    <string name="at_your_stop">At your stop</string>
+    <string name="follow_next_bus">Follow the next bus</string>
+    <string name="your_stop">Your stop</string>
+    <string name="arriving_at">Arriving at %1$s</string>
+    <string name="arriving">Arriving</string>
+    <string name="stop_passed">Your bus has already gone past your stop</string>
+    <string name="stop_passed_at">It went by at %1$s</string>
+    <string name="next_bus_at">Next: %1$s</string>
+    <string name="next_bus_at_delay">Next: %1$s · %2$s</string>
+    <string name="next_bus_loading">Looking for the next bus…</string>
+    <string name="no_more_buses">No more buses at this stop today</string>
+    <string name="bus_not_reporting">No live position yet</string>
+    <string name="bus_not_reporting_detail">The operator has not published where this bus is yet: its route and times are below.</string>
+    <string name="trip_completed">Trip finished</string>
+    <string name="trip_completed_detail">This bus has reached the end of its route.</string>
+    <string name="live_position">Live position</string>
+    <string name="position_updated">Position updated %1$s</string>
+
+    <!-- Favourites -->
+    <string name="search_all_stops">Search all stops</string>
+    <string name="no_saved_stops">No saved stops yet</string>
+    <string name="no_saved_stops_body">Search for a stop above and tap its star, or browse a route to find stops on the way</string>
+    <string name="browse_routes">Browse routes</string>
+    <string name="no_stops_match">No stops match</string>
+    <string name="saved_to_my_stops">Saved to My stops</string>
+    <string name="removed_from_my_stops">Removed from My stops</string>
+    <plurals name="saved_stops">
+        <item quantity="one">%1$d saved stop</item>
+        <item quantity="other">%1$d saved stops</item>
+    </plurals>
+
+    <!-- Updated / time-ago -->
+    <string name="updating">Updating…</string>
+
+
+    <!-- Route detail -->
+    <string name="direction_numbered">Direction %1$d</string>
+    <string name="loading_departures">Loading departures…</string>
+    <string name="no_more_departures">No more departures today</string>
+    <string name="select_route">Select a route from the list to\nview live buses, stops, and map</string>
+    <plurals name="route_stops_hint">
+        <item quantity="one">%1$d stop · tap a stop for next departures</item>
+        <item quantity="other">%1$d stops · tap a stop for next departures</item>
+    </plurals>
+
+    <!-- About -->
+    <string name="about">About</string>
+    <string name="close">Close</string>
+    <string name="version">Version %1$s</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="theme">Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="language">Language</string>
+    <string name="language_system">System default</string>
+    <string name="language_english">English</string>
+    <string name="language_spanish">Español</string>
+    <string name="restart_to_apply_title">Restart to apply</string>
+    <string name="restart_to_apply_body">Restart the app to change the language.</string>
+    <string name="ok">OK</string>
+</resources>

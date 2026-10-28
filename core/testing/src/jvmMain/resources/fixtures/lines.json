@@ -1,0 +1,302 @@
+{
+  "result": {
+    "lines": [
+      {
+        "id": 6,
+        "name": "6-CENTRO-EL CORTIJO",
+        "color": "rgba(146,76,72,1)",
+        "stops": {
+          "asc": [
+            {
+              "id": 189,
+              "name": "Eliseo Pinedo",
+              "lat": 42.460477,
+              "lng": -2.435233,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.460477,
+                  "lng": -2.435233
+                },
+                {
+                  "lat": 42.460409,
+                  "lng": -2.435343
+                }
+              ]
+            },
+            {
+              "id": 53,
+              "name": "Marqués de la Ensenada",
+              "lat": 42.461524,
+              "lng": -2.439468,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.461528,
+                  "lng": -2.439468
+                },
+                {
+                  "lat": 42.461528,
+                  "lng": -2.439651
+                }
+              ]
+            },
+            {
+              "id": 52,
+              "name": "Monumento al labrador",
+              "lat": 42.462764,
+              "lng": -2.444323,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.462767,
+                  "lng": -2.444323
+                },
+                {
+                  "lat": 42.462796,
+                  "lng": -2.444675
+                }
+              ]
+            },
+            {
+              "id": 81,
+              "name": "Torre de Logroño",
+              "lat": 42.463535,
+              "lng": -2.447466,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.463539,
+                  "lng": -2.447466
+                },
+                {
+                  "lat": 42.463612,
+                  "lng": -2.447721
+                }
+              ]
+            }
+          ],
+          "desc": [
+            {
+              "id": 152,
+              "name": "Plaza de la iglesia El Cortijo",
+              "lat": 42.492503,
+              "lng": -2.520566,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.492506,
+                  "lng": -2.520566
+                },
+                {
+                  "lat": 42.492578,
+                  "lng": -2.520529
+                }
+              ]
+            },
+            {
+              "id": 808,
+              "name": "Monte Rincón",
+              "lat": 42.48427,
+              "lng": -2.480927,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.484273,
+                  "lng": -2.480927
+                },
+                {
+                  "lat": 42.484327,
+                  "lng": -2.480768
+                }
+              ]
+            },
+            {
+              "id": 806,
+              "name": "La Isla",
+              "lat": 42.480016,
+              "lng": -2.470206,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.480019,
+                  "lng": -2.470206
+                },
+                {
+                  "lat": 42.479964,
+                  "lng": -2.469976
+                }
+              ]
+            },
+            {
+              "id": 182,
+              "name": "Blanco Lac",
+              "lat": 42.472037,
+              "lng": -2.462573,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.47204,
+                  "lng": -2.462573
+                },
+                {
+                  "lat": 42.471477,
+                  "lng": -2.46169
+                }
+              ]
+            }
+          ]
+        },
+        "status": 1
+      },
+      {
+        "id": 31,
+        "name": "B1-VAREA-LA CAVA",
+        "color": "rgba(253,2,0,1)",
+        "stops": {
+          "asc": [
+            {
+              "id": 5,
+              "name": "Artesanos",
+              "lat": 42.461701,
+              "lng": -2.40653,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.461704,
+                  "lng": -2.40653
+                },
+                {
+                  "lat": 42.461613,
+                  "lng": -2.406427
+                }
+              ]
+            },
+            {
+              "id": 130,
+              "name": "La Cadena",
+              "lat": 42.460323,
+              "lng": -2.413609,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.460326,
+                  "lng": -2.413609
+                },
+                {
+                  "lat": 42.460188,
+                  "lng": -2.41352
+                }
+              ]
+            },
+            {
+              "id": 848,
+              "name": "La Fombera",
+              "lat": 42.460387,
+              "lng": -2.417342,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.46039,
+                  "lng": -2.417342
+                },
+                {
+                  "lat": 42.460401,
+                  "lng": -2.417598
+                }
+              ]
+            },
+            {
+              "id": 129,
+              "name": "Los Lirios",
+              "lat": 42.461282,
+              "lng": -2.421494,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.461285,
+                  "lng": -2.421494
+                },
+                {
+                  "lat": 42.461313,
+                  "lng": -2.421664
+                }
+              ]
+            }
+          ],
+          "desc": [
+            {
+              "id": 801,
+              "name": "La Cava",
+              "lat": 42.453678,
+              "lng": -2.465442,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.453681,
+                  "lng": -2.465442
+                },
+                {
+                  "lat": 42.453694,
+                  "lng": -2.465275
+                }
+              ]
+            },
+            {
+              "id": 214,
+              "name": "Sojuela",
+              "lat": 42.45333,
+              "lng": -2.462308,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.453333,
+                  "lng": -2.462308
+                },
+                {
+                  "lat": 42.453332,
+                  "lng": -2.462016
+                }
+              ]
+            },
+            {
+              "id": 215,
+              "name": "San Adrián",
+              "lat": 42.452928,
+              "lng": -2.459161,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.452931,
+                  "lng": -2.459161
+                },
+                {
+                  "lat": 42.452937,
+                  "lng": -2.458986
+                }
+              ]
+            },
+            {
+              "id": 216,
+              "name": "Palacio de Deportes",
+              "lat": 42.452295,
+              "lng": -2.454667,
+              "status": 1,
+              "onwardShape": [
+                {
+                  "lat": 42.452298,
+                  "lng": -2.454667
+                },
+                {
+                  "lat": 42.452258,
+                  "lng": -2.454472
+                }
+              ]
+            }
+          ]
+        },
+        "status": 1
+      }
+    ]
+  }
+}

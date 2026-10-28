@@ -1,0 +1,91 @@
+{
+  "result": {
+    "arrivals": [
+      {
+        "lineRef": "6",
+        "directionRef": "",
+        "journeyCode": "14442",
+        "vehicleRef": "",
+        "stopPointRef": "152",
+        "order": 11,
+        "aimedArrivalTime": "2026-10-15T13:45:30+02:00",
+        "expectedArrivalTime": "2026-10-15T13:45:30+02:00",
+        "aimedDepartureTime": "2026-10-15T13:45:30+02:00",
+        "expectedDepartureTime": "2026-10-15T13:45:30+02:00",
+        "arrivalStatus": "scheduled",
+        "departureStatus": "scheduled",
+        "cancellation": false,
+        "predictionInaccurate": false,
+        "delaySeconds": 0
+      },
+      {
+        "lineRef": "6",
+        "directionRef": "",
+        "journeyCode": "14451",
+        "vehicleRef": "",
+        "stopPointRef": "152",
+        "order": 0,
+        "aimedArrivalTime": "2026-10-15T14:00:00+02:00",
+        "expectedArrivalTime": "2026-10-15T14:00:00+02:00",
+        "aimedDepartureTime": "2026-10-15T14:00:00+02:00",
+        "expectedDepartureTime": "2026-10-15T14:00:00+02:00",
+        "arrivalStatus": "scheduled",
+        "departureStatus": "scheduled",
+        "cancellation": false,
+        "predictionInaccurate": false,
+        "delaySeconds": 0
+      },
+      {
+        "lineRef": "B1",
+        "directionRef": "363",
+        "journeyCode": "99901",
+        "vehicleRef": "7777",
+        "stopPointRef": "152",
+        "order": 3,
+        "aimedArrivalTime": "2026-10-15T14:20:00+02:00",
+        "expectedArrivalTime": "2026-10-15T14:19:00+02:00",
+        "aimedDepartureTime": "2026-10-15T14:20:00+02:00",
+        "expectedDepartureTime": "2026-10-15T14:19:00+02:00",
+        "arrivalStatus": "ARRIVED",
+        "departureStatus": "ONTIME",
+        "cancellation": false,
+        "predictionInaccurate": true,
+        "delaySeconds": -60
+      },
+      {
+        "lineRef": "10",
+        "directionRef": "",
+        "journeyCode": "",
+        "vehicleRef": "",
+        "stopPointRef": "152",
+        "order": 0,
+        "aimedArrivalTime": "2026-10-15T23:50:00+02:00",
+        "expectedArrivalTime": "2026-10-15T23:50:00+02:00",
+        "aimedDepartureTime": "2026-10-15T23:50:00+02:00",
+        "expectedDepartureTime": "2026-10-15T23:50:00+02:00",
+        "arrivalStatus": "NO_REPORT",
+        "departureStatus": "NO_REPORT",
+        "cancellation": true,
+        "predictionInaccurate": false,
+        "delaySeconds": 0
+      },
+      {
+        "lineRef": "6",
+        "directionRef": "",
+        "journeyCode": "70001",
+        "vehicleRef": "",
+        "stopPointRef": "152",
+        "order": 11,
+        "aimedArrivalTime": "2026-10-16T07:00:00+02:00",
+        "expectedArrivalTime": "2026-10-16T07:00:00+02:00",
+        "aimedDepartureTime": "2026-10-16T07:00:00+02:00",
+        "expectedDepartureTime": "2026-10-16T07:00:00+02:00",
+        "arrivalStatus": "scheduled",
+        "departureStatus": "scheduled",
+        "cancellation": false,
+        "predictionInaccurate": false,
+        "delaySeconds": 0
+      }
+    ]
+  }
+}
