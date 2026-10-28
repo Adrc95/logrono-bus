@@ -151,6 +151,11 @@ La app de iOS es la única que no compila Gradle, porque necesita Xcode para enl
 El `versionCode` y el `versionName` de Android salen de `-PversionNum` cuando lo pasas. Para una build
 de release, el keystore se lee de `keystore.properties`.
 
+`./gradlew :androidApp:assembleRelease` aplica R8 con `androidApp/proguard-rules.pro` y genera un
+`mapping.txt` en `androidApp/build/outputs/mapping/release/`. Guarda ese fichero: es la única forma de
+leer un crash de release, y no debe publicarse nunca porque deshace la ofuscación. La variante debug
+lleva el sufijo `.debug` en el identificador, así que las dos se pueden instalar a la vez.
+
 Spotless mantiene el build ordenado: ktlint impone el estilo. `./gradlew spotlessCheck` lo verifica y
 `./gradlew spotlessApply` reescribe lo que no cumpla.
 

@@ -149,6 +149,11 @@ The iOS app is the only one not built by Gradle, because it needs Xcode to link 
 The Android `versionCode` and `versionName` come from `-PversionNum` when you pass it. For a release
 build, the keystore is read from `keystore.properties`.
 
+`./gradlew :androidApp:assembleRelease` runs R8 with `androidApp/proguard-rules.pro` and writes an
+`mapping.txt` under `androidApp/build/outputs/mapping/release/`. Keep that file: it is the only way to
+read a release crash, and it must never be published because it undoes the obfuscation. The debug
+variant carries an `.debug` application id suffix, so both can be installed side by side.
+
 Spotless keeps the build tidy: ktlint enforces the style. `./gradlew spotlessCheck` verifies it and
 `./gradlew spotlessApply` rewrites whatever does not comply.
 

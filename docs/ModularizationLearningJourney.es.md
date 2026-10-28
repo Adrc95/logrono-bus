@@ -157,7 +157,8 @@ build aplica un **plugin de convención** de `build-logic`:
 | Plugin | Qué aplica |
 |---|---|
 | `logronobus.kmp.library` | Kotlin Multiplatform + librería de Android, los cuatro targets (`jvm`, `iosArm64`, `iosSimulatorArm64`, `wasmJs`), el `namespace` a partir de la ruta del módulo, `compileSdk`/`minSdk` del catálogo de versiones, JVM 17 y la jerarquía por defecto |
-| `logronobus.compose` | Compose Multiplatform y el compilador de Compose |
+| `logronobus.kmp.compose` | Librería + Compose Multiplatform + el compilador de Compose |
+| `logronobus.android.application` | Aplicación Android + Compose + los niveles de SDK del catálogo de versiones |
 | `logronobus.koin` | KSP, el plugin del compilador de Koin y el cableado del código generado |
 | `logronobus.serialization` | Serialización de Kotlin |
 | `logronobus.kmp.navigation` | Librería + serialización + Navigation 3 |

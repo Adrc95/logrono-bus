@@ -158,7 +158,8 @@ applies a **convention plugin** from `build-logic`:
 | Plugin | What it applies |
 |---|---|
 | `logronobus.kmp.library` | Kotlin Multiplatform + Android library, the four targets (`jvm`, `iosArm64`, `iosSimulatorArm64`, `wasmJs`), `namespace` derived from the module path, `compileSdk`/`minSdk` from the version catalog, JVM 17, default hierarchy |
-| `logronobus.compose` | Compose Multiplatform and the Compose compiler |
+| `logronobus.kmp.compose` | Library + Compose Multiplatform + the Compose compiler |
+| `logronobus.android.application` | Android application + Compose + the SDK levels from the version catalog |
 | `logronobus.koin` | KSP, the Koin compiler plugin and the generated source wiring |
 | `logronobus.serialization` | Kotlin serialization |
 | `logronobus.kmp.navigation` | Library + serialization + Navigation 3 |
