@@ -43,12 +43,14 @@ graph TB
   navigation[navigation]:::navigation
   library[library]:::library
   application[application]:::application
-  jvm[jvm]:::jvm-library
+  jvm-library[jvm-library]:::jvm-library
+  kmp-library[kmp-library]:::kmp-library
+  android-library[android-library]:::android-library
 
   feature --> navigation
   feature --> library
   application --> library
-  library -.-> jvm
+  library -.-> jvm-library
 
 classDef feature fill:#CAFFBF,stroke:#000,stroke-width:2px,color:#000;
 classDef navigation fill:#9BF6FF,stroke:#000,stroke-width:2px,color:#000;

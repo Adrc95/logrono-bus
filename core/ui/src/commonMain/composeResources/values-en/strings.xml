@@ -191,7 +191,7 @@
     <string name="language">Language</string>
     <string name="language_system">System default</string>
     <string name="language_english">English</string>
-    <string name="language_spanish">Español</string>
+    <string name="language_spanish">Spanish</string>
     <string name="restart_to_apply_title">Restart to apply</string>
     <string name="restart_to_apply_body">Restart the app to change the language.</string>
     <string name="ok">OK</string>

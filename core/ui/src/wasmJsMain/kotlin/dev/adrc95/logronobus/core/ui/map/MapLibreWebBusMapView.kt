@@ -70,7 +70,6 @@ import dev.adrc95.logronobus.core.ui.model.StopDisplayModel
 import dev.adrc95.logronobus.core.ui.model.StopEtaDisplayModel
 import dev.adrc95.logronobus.core.ui.util.toLineColor
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
@@ -418,29 +417,30 @@ fun MapLibreWebBusMapView(
 
     LaunchedEffect(following, trackedTripId) {
         if (!following) return@LaunchedEffect
-        snapshotFlow { followPosition to mapState.cameraPosition.target }
-            .collectLatest {
-                delay(FOLLOW_SETTLE_MILLIS)
-                val bus = followPosition ?: return@collectLatest
-                val centre = mapState.cameraPosition.target
-                val target =
-                    followTarget(
-                        bus = GeoPoint(bus.latitude, bus.longitude),
-                        camera = GeoPoint(centre.latitude, centre.longitude),
-                    ) ?: return@collectLatest
-                val zoom = if (followZoomPending) FOLLOW_ZOOM else mapState.cameraPosition.zoom
-                followZoomPending = false
-                mapState.animateCameraPosition(
-                    position =
-                        CameraPosition(
-                            target = Position(target.lon, target.lat),
-                            zoom = zoom,
-                            bearing = mapState.cameraPosition.bearing,
-                            tilt = mapState.cameraPosition.tilt,
-                        ),
-                    duration = 1.seconds,
-                )
-            }
+        var first = true
+        while (true) {
+            if (!first) delay(FOLLOW_SETTLE_MILLIS)
+            first = false
+            val bus = followPosition ?: continue
+            val centre = mapState.cameraPosition.target
+            val target =
+                followTarget(
+                    bus = GeoPoint(bus.latitude, bus.longitude),
+                    camera = GeoPoint(centre.latitude, centre.longitude),
+                ) ?: continue
+            val zoom = if (followZoomPending) FOLLOW_ZOOM else mapState.cameraPosition.zoom
+            followZoomPending = false
+            mapState.animateCameraPosition(
+                position =
+                    CameraPosition(
+                        target = Position(target.lon, target.lat),
+                        zoom = zoom,
+                        bearing = mapState.cameraPosition.bearing,
+                        tilt = mapState.cameraPosition.tilt,
+                    ),
+                duration = 1.seconds,
+            )
+        }
     }
 
     Box(modifier.fillMaxSize()) {

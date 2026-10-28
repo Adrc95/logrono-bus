@@ -19,6 +19,8 @@ package dev.adrc95.logronobus.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidedValue
 import androidx.compose.runtime.staticCompositionLocalOf
+import kotlin.js.ExperimentalWasmJsInterop
+import kotlin.js.js
 
 actual object LocalAppLocale {
     private val localAppLocale = staticCompositionLocalOf<String?> { null }
@@ -27,5 +29,26 @@ actual object LocalAppLocale {
         @Composable get() = localAppLocale.current ?: "en"
 
     @Composable
-    actual infix fun provides(value: String?): ProvidedValue<*> = localAppLocale.provides(value)
+    actual infix fun provides(value: String?): ProvidedValue<*> {
+        if (value != null) applyBrowserLocale(value)
+        return localAppLocale.provides(value)
+    }
 }
+
+// Compose reads the language it serves resources in from `navigator.languages`, and reloads that
+// list when the window fires `languagechange`, so overriding both is what makes the switch work.
+@OptIn(ExperimentalWasmJsInterop::class)
+private val applyBrowserLocale: (String) -> Unit =
+    js(
+        """(tag) => {
+            Object.defineProperty(window.navigator, 'languages', {
+                get: () => [tag],
+                configurable: true,
+            });
+            Object.defineProperty(window.navigator, 'language', {
+                get: () => tag,
+                configurable: true,
+            });
+            window.dispatchEvent(new Event('languagechange'));
+        }""",
+    )

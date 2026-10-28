@@ -54,18 +54,28 @@ internal class Graph(
     private fun Configuration.isSupported(): Boolean {
         val declared = supportedConfigurations.get()
         if (declared.isNotEmpty()) return name in declared
-        if (!name.endsWith(API) && !name.endsWith(IMPLEMENTATION)) return false
-        // Test source sets use the same suffixes (`commonTestImplementation`, `jvmTestImplementation`),
-        // so without this every fixtures dependency (`:core:testing`) would pull the whole graph in.
+        if (!name.isApiConfiguration() && !name.isImplementationConfiguration()) return false
+        // Test source sets reuse these names (`commonTestImplementation`), so without this every
+        // fixtures dependency (`:core:testing`) would pull the whole graph in.
         return NON_PRODUCTION_MARKERS.none { name.contains(it, ignoreCase = true) }
     }
 
     private companion object {
-        const val API = "Api"
-        const val IMPLEMENTATION = "Implementation"
         val NON_PRODUCTION_MARKERS = listOf("test", "benchmark")
     }
 }
+
+internal const val API_CONFIGURATION = "api"
+internal const val IMPLEMENTATION_CONFIGURATION = "implementation"
+
+// Plain Android and JVM projects declare `api`/`implementation`; Kotlin Multiplatform prefixes them
+// with the source set (`commonMainApi`, `jvmMainImplementation`).
+internal fun String.isApiConfiguration(): Boolean =
+    this == API_CONFIGURATION || endsWith(API_CONFIGURATION.replaceFirstChar { it.uppercase() })
+
+internal fun String.isImplementationConfiguration(): Boolean =
+    this == IMPLEMENTATION_CONFIGURATION ||
+        endsWith(IMPLEMENTATION_CONFIGURATION.replaceFirstChar { it.uppercase() })
 
 enum class PluginType(val id: String, val ref: String, val style: String) {
     Feature(

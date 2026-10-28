@@ -95,19 +95,15 @@ abstract class GraphDumpTask : DefaultTask() {
 
     private fun legend(): String = buildString {
         appendLine("graph TB")
-        listOf(
-            "feature" to PluginType.Feature,
-            "navigation" to PluginType.Navigation,
-            "library" to PluginType.Library,
-            "application" to PluginType.AndroidApplication,
-            "jvm" to PluginType.KotlinJvm,
-        ).forEach { (name, type) -> appendLine(name.alias(indent = 2, type = type)) }
+        PluginType.entries.filter { it != PluginType.Unknown }.forEach { type ->
+            appendLine(type.ref.alias(indent = 2, type = type))
+        }
         appendLine()
         listOf(
-            Link("feature", "-->", "navigation"),
-            Link("feature", "-->", "library"),
-            Link("application", "-->", "library"),
-            Link("library", "-.->", "jvm"),
+            Link(PluginType.Feature.ref, "-->", PluginType.Navigation.ref),
+            Link(PluginType.Feature.ref, "-->", PluginType.Library.ref),
+            Link(PluginType.AndroidApplication.ref, "-->", PluginType.Library.ref),
+            Link(PluginType.Library.ref, "-.->", PluginType.KotlinJvm.ref),
         ).forEach { appendLine(it.render(indent = 2)) }
         appendLine()
         PluginType.entries.forEach { appendLine(it.classDef()) }
@@ -144,8 +140,8 @@ abstract class GraphDumpTask : DefaultTask() {
     }
 
     private fun List<String>.arrow(): String = when {
-        any { it.endsWith(API) } -> "-->"
-        any { it.endsWith(IMPLEMENTATION) } -> "-.->"
+        any { it.isApiConfiguration() } -> "-->"
+        any { it.isImplementationConfiguration() } -> "-.->"
         else -> "-.->|${first()}|"
     }
 
@@ -156,11 +152,6 @@ abstract class GraphDumpTask : DefaultTask() {
 
     private data class Link(val project: String, val arrow: String, val dependency: String) {
         fun render(indent: Int): String = " ".repeat(indent) + "$project $arrow $dependency"
-    }
-
-    private companion object {
-        const val API = "Api"
-        const val IMPLEMENTATION = "Implementation"
     }
 }
 
