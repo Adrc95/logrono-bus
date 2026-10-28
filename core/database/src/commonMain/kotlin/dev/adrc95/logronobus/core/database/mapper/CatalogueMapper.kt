@@ -59,4 +59,5 @@ fun CatalogueLineEntity.toRoute(): Route =
         longName = name,
         shortName = code,
         color = colour,
+        internalId = id,
     )

@@ -4,8 +4,8 @@ name: Deploy Web
 # installing anything. Pages allows a single deployment per repository, which is why this workflow
 # owns it.
 #
-# There is no gh-pages branch: `deploy-pages` uploads an artifact and serves it directly, and the
-# first run switches the repository's Pages source to GitHub Actions itself.
+# There is no gh-pages branch: `deploy-pages` uploads an artifact and serves it directly. The Pages
+# source has to be set to "GitHub Actions" by hand, because the workflow token cannot create it.
 
 on:
   push:
@@ -45,8 +45,8 @@ jobs:
       - name: Disable Jekyll processing
         run: touch webApp/build/dist/wasmJs/productionExecutable/.nojekyll
 
-      # `enablement` turns Pages on the first time this runs, so the site does not depend on
-      # someone having flipped the source to GitHub Actions in the repository settings by hand.
+      # Only works for a token that can administer the repository; here it answers
+      # "Resource not accessible by integration", so the source is set in the repository settings.
       - uses: actions/configure-pages@v5
         with:
           enablement: true

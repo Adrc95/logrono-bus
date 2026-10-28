@@ -66,6 +66,7 @@ class CatalogueMapperTest {
                 withTimetableId("6")
                 withLongName("6-CENTRO-EL CORTIJO")
                 withColor("rgba(146,76,72,1)")
+                withInternalId(6)
             }.toEntity()
 
         assertEquals(6, result.id)
@@ -85,6 +86,7 @@ class CatalogueMapperTest {
         assertEquals("6", result.timetableId)
         assertEquals("6-CENTRO-EL CORTIJO", result.longName)
         assertEquals("rgba(146,76,72,1)", result.color)
+        assertEquals(6, result.internalId)
     }
 
     @Test
@@ -98,5 +100,6 @@ class CatalogueMapperTest {
 
         assertEquals("B1", result.timetableId)
         assertEquals("B1", result.shortName)
+        assertEquals(31, result.internalId)
     }
 }

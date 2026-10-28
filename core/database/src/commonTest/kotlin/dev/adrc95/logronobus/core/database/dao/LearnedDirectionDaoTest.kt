@@ -19,29 +19,29 @@ package dev.adrc95.logronobus.core.database.dao
 import dev.adrc95.logronobus.core.database.TestDatabase
 import dev.adrc95.logronobus.core.database.builder.learnedDirectionEntity
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class LearnedDirectionDaoTest {
-    private lateinit var dao: LearnedDirectionDao
+    private val dao: LearnedDirectionDao
+        get() = TestDatabase.database.learnedDirections()
 
-    @BeforeTest
-    fun setUp() {
-        dao = TestDatabase.database.learnedDirections()
-        runTest { dao.clear() }
+    private suspend fun reset() {
+        dao.clear()
     }
 
     @Test
     fun given_no_learned_directions_when_reading_then_the_list_is_empty() =
         runTest {
+            reset()
             assertTrue(dao.all().isEmpty())
         }
 
     @Test
     fun given_a_learned_direction_when_inserted_then_it_can_be_read() =
         runTest {
+            reset()
             val direction =
                 learnedDirectionEntity {
                     withLineCode("9")
@@ -57,6 +57,7 @@ class LearnedDirectionDaoTest {
     @Test
     fun given_a_learned_direction_when_inserted_again_then_it_is_replaced() =
         runTest {
+            reset()
             dao.insertAll(
                 listOf(
                     learnedDirectionEntity {
@@ -81,6 +82,7 @@ class LearnedDirectionDaoTest {
     @Test
     fun given_learned_directions_when_cleared_then_the_table_is_empty() =
         runTest {
+            reset()
             dao.insertAll(
                 listOf(
                     learnedDirectionEntity {

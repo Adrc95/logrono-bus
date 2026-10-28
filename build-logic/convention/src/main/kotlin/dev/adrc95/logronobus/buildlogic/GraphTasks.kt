@@ -51,11 +51,14 @@ abstract class GraphDumpTask : DefaultTask() {
         )
         appendLine("graph TB")
 
+        val closure = reachable()
         val nodes = dependencies.get().values
             .flatMap { entries -> entries.map { it.second } }
             .toSet()
             .plus(dependencies.get().keys)
             .plus(projectPath.get())
+            .filter { it in closure }
+            .toSet()
 
         val members = mutableMapOf<String, MutableSet<String>>()
         val children = mutableMapOf<String, MutableSet<String>>()
@@ -110,19 +113,35 @@ abstract class GraphDumpTask : DefaultTask() {
         PluginType.entries.forEach { appendLine(it.classDef()) }
     }
 
+    private fun reachable(): Set<String> {
+        val deps = dependencies.get()
+        val seen = mutableSetOf<String>()
+        val queue = ArrayDeque(listOf(projectPath.get()))
+        while (queue.isNotEmpty()) {
+            val current = queue.removeFirst()
+            if (!seen.add(current)) continue
+            deps[current].orEmpty().forEach { (_, target) -> queue.addLast(target) }
+        }
+        return seen
+    }
+
     private fun ownGroupFirst(): Comparator<String> {
         val own = projectPath.get().substringBeforeLast(":")
         return compareBy({ if (it == own) 0 else 1 }, { it })
     }
 
-    private fun links(): List<Link> = dependencies.get()
-        .flatMap { (from, entries) -> entries.map { (configuration, to) -> Triple(from, to, configuration) } }
-        .groupBy { (from, to, _) -> from to to }
-        .map { (pair, edges) ->
-            val configurations = edges.map { (_, _, configuration) -> configuration }
-            Link(pair.first, configurations.arrow(), pair.second)
-        }
-        .sortedWith(compareBy({ it.project }, { it.dependency }))
+    private fun links(): List<Link> {
+        val closure = reachable()
+        return dependencies.get()
+            .flatMap { (from, entries) -> entries.map { (configuration, to) -> Triple(from, to, configuration) } }
+            .groupBy { (from, to, _) -> from to to }
+            .map { (pair, edges) ->
+                val configurations = edges.map { (_, _, configuration) -> configuration }
+                Link(pair.first, configurations.arrow(), pair.second)
+            }
+            .filter { it.project in closure && it.dependency in closure }
+            .sortedWith(compareBy({ it.project }, { it.dependency }))
+    }
 
     private fun List<String>.arrow(): String = when {
         any { it.endsWith(API) } -> "-->"

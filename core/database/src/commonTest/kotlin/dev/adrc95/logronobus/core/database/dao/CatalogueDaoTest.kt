@@ -20,27 +20,24 @@ import dev.adrc95.logronobus.core.database.TestDatabase
 import dev.adrc95.logronobus.core.database.builder.catalogueLineEntity
 import dev.adrc95.logronobus.core.database.builder.catalogueStopEntity
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class CatalogueDaoTest {
-    private lateinit var dao: CatalogueDao
+    private val dao: CatalogueDao
+        get() = TestDatabase.database.catalogue()
 
-    @BeforeTest
-    fun set_up() {
-        dao = TestDatabase.database.catalogue()
-        runTest {
-            dao.clearStops()
-            dao.clearLines()
-        }
+    private suspend fun reset() {
+        dao.clearStops()
+        dao.clearLines()
     }
 
     @Test
     fun given_an_empty_catalogue_when_reading_then_there_are_no_rows_and_no_timestamps() =
         runTest {
+            reset()
             // When
             val stops = dao.allStops()
             val lines = dao.allLines()
@@ -55,6 +52,7 @@ class CatalogueDaoTest {
     @Test
     fun given_stops_when_inserted_then_they_come_back_with_their_timestamp() =
         runTest {
+            reset()
             // Given
             val first =
                 catalogueStopEntity {
@@ -80,6 +78,7 @@ class CatalogueDaoTest {
     @Test
     fun given_lines_when_inserted_then_they_come_back_with_their_code() =
         runTest {
+            reset()
             // Given
             val night =
                 catalogueLineEntity {
@@ -106,6 +105,7 @@ class CatalogueDaoTest {
     @Test
     fun given_stops_when_cleared_then_the_table_is_empty_again() =
         runTest {
+            reset()
             // Given
             dao.insertStops(listOf(catalogueStopEntity()))
 

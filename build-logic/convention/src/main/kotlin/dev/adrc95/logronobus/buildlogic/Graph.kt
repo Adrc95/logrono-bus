@@ -53,15 +53,17 @@ internal class Graph(
 
     private fun Configuration.isSupported(): Boolean {
         val declared = supportedConfigurations.get()
-        return when {
-            declared.isNotEmpty() -> name in declared
-            else -> name.endsWith(API) || name.endsWith(IMPLEMENTATION)
-        }
+        if (declared.isNotEmpty()) return name in declared
+        if (!name.endsWith(API) && !name.endsWith(IMPLEMENTATION)) return false
+        // Test source sets use the same suffixes (`commonTestImplementation`, `jvmTestImplementation`),
+        // so without this every fixtures dependency (`:core:testing`) would pull the whole graph in.
+        return NON_PRODUCTION_MARKERS.none { name.contains(it, ignoreCase = true) }
     }
 
     private companion object {
         const val API = "Api"
         const val IMPLEMENTATION = "Implementation"
+        val NON_PRODUCTION_MARKERS = listOf("test", "benchmark")
     }
 }
 

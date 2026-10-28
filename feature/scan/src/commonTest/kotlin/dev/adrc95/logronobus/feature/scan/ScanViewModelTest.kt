@@ -59,6 +59,7 @@ class ScanViewModelTest {
                                         timetableId = LINE,
                                         longName = "6-CENTRO-EL CORTIJO",
                                         shortName = LINE,
+                                        internalId = 6,
                                     ),
                             ),
                         stopsByRoute = listOf(stopsOf(townStops), stopsOf(countryStops)),

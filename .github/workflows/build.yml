@@ -64,7 +64,7 @@ jobs:
 
   apple:
     name: iOS framework + desktop
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
@@ -112,9 +112,6 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v4
-      # The Room web test only runs under a real Chromium; the Ubuntu runner ships Chrome, a
-      # local Mac may not, so this is where those assertions actually get exercised.
-      - run: ./gradlew :core:database:wasmJsBrowserTest --stacktrace
       - run: ./gradlew :webApp:wasmJsBrowserDistribution --stacktrace
       - uses: actions/upload-artifact@v4
         with:

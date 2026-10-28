@@ -19,24 +19,23 @@ package dev.adrc95.logronobus.core.database.dao
 import dev.adrc95.logronobus.core.database.TestDatabase
 import dev.adrc95.logronobus.core.database.builder.fareEntity
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class FaresDaoTest {
-    private lateinit var dao: FaresDao
+    private val dao: FaresDao
+        get() = TestDatabase.database.fares()
 
-    @BeforeTest
-    fun set_up() {
-        dao = TestDatabase.database.fares()
-        runTest { dao.clear() }
+    private suspend fun reset() {
+        dao.clear()
     }
 
     @Test
     fun given_an_empty_table_when_reading_then_there_are_no_fares_and_no_timestamp() =
         runTest {
+            reset()
             // When
             val fares = dao.all()
             val storedAt = dao.storedAt()
@@ -49,6 +48,7 @@ class FaresDaoTest {
     @Test
     fun given_fares_when_inserted_then_they_come_back_with_their_timestamp() =
         runTest {
+            reset()
             // Given
             val single =
                 fareEntity {
@@ -72,6 +72,7 @@ class FaresDaoTest {
     @Test
     fun given_a_fare_when_inserted_again_then_it_replaces_the_old_one() =
         runTest {
+            reset()
             // Given
             dao.insertAll(
                 listOf(
@@ -99,6 +100,7 @@ class FaresDaoTest {
     @Test
     fun given_fares_when_cleared_then_the_table_is_empty_again() =
         runTest {
+            reset()
             // Given
             dao.insertAll(listOf(fareEntity()))
 

@@ -21,5 +21,5 @@ data class Route(
     val longName: String,
     val shortName: String,
     val color: String? = null,
-    val internalId: Int = 0,
+    val internalId: Int,
 )

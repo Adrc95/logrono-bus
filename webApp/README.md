@@ -23,7 +23,6 @@ graph TB
     :core:navigation[navigation]:::library
     :core:network[network]:::library
     :core:preference[preference]:::library
-    :core:testing[testing]:::library
     :core:ui[ui]:::library
   end
   subgraph :feature
@@ -84,40 +83,26 @@ graph TB
   :core:data --> :core:model
   :core:data -.-> :core:network
   :core:data -.-> :core:preference
-  :core:data -.-> :core:testing
   :core:database --> :core:model
-  :core:database -.-> :core:testing
   :core:device -.-> :core:common
   :core:device --> :core:model
   :core:domain --> :core:common
   :core:domain --> :core:model
-  :core:domain -.-> :core:testing
   :core:navigation -.-> :core:common
   :core:network --> :core:common
   :core:network -.-> :core:domain
   :core:network --> :core:model
-  :core:network -.-> :core:testing
   :core:preference -.-> :core:common
   :core:preference --> :core:model
-  :core:preference -.-> :core:testing
-  :core:testing --> :core:data
-  :core:testing --> :core:database
-  :core:testing --> :core:domain
-  :core:testing --> :core:model
-  :core:testing --> :core:network
-  :core:testing --> :core:preference
-  :core:testing --> :core:ui
   :core:ui -.-> :core:common
   :core:ui --> :core:designsystem
   :core:ui -.-> :core:domain
   :core:ui --> :core:model
-  :core:ui -.-> :core:testing
   :feature:buses -.-> :core:common
   :feature:buses -.-> :core:designsystem
   :feature:buses -.-> :core:domain
   :feature:buses --> :core:model
   :feature:buses -.-> :core:navigation
-  :feature:buses -.-> :core:testing
   :feature:buses -.-> :core:ui
   :feature:buses --> :feature:buses:navigation
   :feature:buses -.-> :feature:fares:navigation
@@ -127,8 +112,6 @@ graph TB
   :feature:fares -.-> :core:domain
   :feature:fares --> :core:model
   :feature:fares -.-> :core:navigation
-  :feature:fares -.-> :core:network
-  :feature:fares -.-> :core:testing
   :feature:fares -.-> :core:ui
   :feature:fares --> :feature:fares:navigation
   :feature:favourites -.-> :core:common
@@ -136,20 +119,16 @@ graph TB
   :feature:favourites -.-> :core:domain
   :feature:favourites --> :core:model
   :feature:favourites -.-> :core:navigation
-  :feature:favourites -.-> :core:testing
   :feature:favourites -.-> :core:ui
   :feature:favourites --> :feature:favourites:navigation
   :feature:favourites -.-> :feature:routes:navigation
   :feature:favourites -.-> :feature:stops:navigation
   :feature:favourites -.-> :feature:tracking:navigation
   :feature:nearby -.-> :core:common
-  :feature:nearby -.-> :core:data
   :feature:nearby -.-> :core:designsystem
-  :feature:nearby -.-> :core:device
   :feature:nearby -.-> :core:domain
   :feature:nearby --> :core:model
   :feature:nearby -.-> :core:navigation
-  :feature:nearby -.-> :core:testing
   :feature:nearby -.-> :core:ui
   :feature:nearby --> :feature:nearby:navigation
   :feature:nearby -.-> :feature:stops:navigation
@@ -158,7 +137,6 @@ graph TB
   :feature:routes -.-> :core:domain
   :feature:routes --> :core:model
   :feature:routes -.-> :core:navigation
-  :feature:routes -.-> :core:testing
   :feature:routes -.-> :core:ui
   :feature:routes --> :feature:routes:navigation
   :feature:routes -.-> :feature:settings:navigation
@@ -170,7 +148,6 @@ graph TB
   :feature:scan -.-> :core:domain
   :feature:scan --> :core:model
   :feature:scan -.-> :core:navigation
-  :feature:scan -.-> :core:testing
   :feature:scan -.-> :core:ui
   :feature:scan --> :feature:scan:navigation
   :feature:scan -.-> :feature:stops:navigation
@@ -179,7 +156,6 @@ graph TB
   :feature:settings -.-> :core:domain
   :feature:settings --> :core:model
   :feature:settings -.-> :core:navigation
-  :feature:settings -.-> :core:testing
   :feature:settings -.-> :core:ui
   :feature:settings --> :feature:settings:navigation
   :feature:stops -.-> :core:common
@@ -187,7 +163,6 @@ graph TB
   :feature:stops -.-> :core:domain
   :feature:stops --> :core:model
   :feature:stops -.-> :core:navigation
-  :feature:stops -.-> :core:testing
   :feature:stops -.-> :core:ui
   :feature:stops --> :feature:stops:navigation
   :feature:stops -.-> :feature:tracking:navigation
@@ -196,9 +171,7 @@ graph TB
   :feature:tracking -.-> :core:domain
   :feature:tracking --> :core:model
   :feature:tracking -.-> :core:navigation
-  :feature:tracking -.-> :core:testing
   :feature:tracking -.-> :core:ui
-  :feature:tracking -.-> :feature:routes
   :feature:tracking --> :feature:tracking:navigation
   :shared -.-> :core:common
   :shared -.-> :core:data
@@ -210,7 +183,6 @@ graph TB
   :shared -.-> :core:navigation
   :shared -.-> :core:network
   :shared -.-> :core:preference
-  :shared -.-> :core:testing
   :shared -.-> :core:ui
   :shared -.-> :feature:buses
   :shared -.-> :feature:fares

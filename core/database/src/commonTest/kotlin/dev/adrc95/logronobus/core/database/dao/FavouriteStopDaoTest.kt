@@ -20,29 +20,29 @@ import dev.adrc95.logronobus.core.database.TestDatabase
 import dev.adrc95.logronobus.core.database.builder.favouriteStopEntity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class FavouriteStopDaoTest {
-    private lateinit var dao: FavouriteStopDao
+    private val dao: FavouriteStopDao
+        get() = TestDatabase.database.favouriteStops()
 
-    @BeforeTest
-    fun setUp() {
-        dao = TestDatabase.database.favouriteStops()
-        runTest { dao.clear() }
+    private suspend fun reset() {
+        dao.clear()
     }
 
     @Test
     fun given_no_favourites_when_reading_then_the_list_is_empty() =
         runTest {
+            reset()
             assertTrue(dao.observe().first().isEmpty())
         }
 
     @Test
     fun given_a_favourite_when_upserted_then_it_can_be_read() =
         runTest {
+            reset()
             val entity =
                 favouriteStopEntity {
                     withStopRef("360")
@@ -59,6 +59,7 @@ class FavouriteStopDaoTest {
     @Test
     fun given_a_favourite_when_upserted_again_then_it_is_replaced() =
         runTest {
+            reset()
             dao.upsert(
                 favouriteStopEntity {
                     withStopRef("360")
@@ -79,6 +80,7 @@ class FavouriteStopDaoTest {
     @Test
     fun given_several_favourites_when_reading_then_they_come_back_in_position_order() =
         runTest {
+            reset()
             val first =
                 favouriteStopEntity {
                     withStopRef("360")
@@ -100,6 +102,7 @@ class FavouriteStopDaoTest {
     @Test
     fun given_a_favourite_when_deleted_then_it_is_gone() =
         runTest {
+            reset()
             dao.upsert(favouriteStopEntity { withStopRef("360") })
             dao.upsert(favouriteStopEntity { withStopRef("61") })
 
@@ -111,6 +114,7 @@ class FavouriteStopDaoTest {
     @Test
     fun given_favourites_when_cleared_then_the_table_is_empty() =
         runTest {
+            reset()
             dao.upsert(favouriteStopEntity { withStopRef("360") })
 
             dao.clear()
@@ -121,6 +125,7 @@ class FavouriteStopDaoTest {
     @Test
     fun given_favourites_when_inserted_at_the_end_then_they_keep_the_order_they_were_added() =
         runTest {
+            reset()
             dao.upsert(
                 favouriteStopEntity {
                     withStopRef("360")

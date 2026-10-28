@@ -16,7 +16,6 @@
 
 package dev.adrc95.logronobus.core.domain.trip
 
-import androidx.compose.foundation.layout.size
 import dev.adrc95.logronobus.core.model.BusLocation
 import dev.adrc95.logronobus.core.model.Stop
 import dev.adrc95.logronobus.core.model.StopPrediction

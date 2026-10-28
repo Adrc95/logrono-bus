@@ -30,60 +30,25 @@ graph TB
   subgraph :core
     direction TB
     :core:common[common]:::library
-    :core:data[data]:::library
-    :core:database[database]:::library
     :core:designsystem[designsystem]:::library
-    :core:device[device]:::library
     :core:domain[domain]:::library
     :core:model[model]:::library
     :core:navigation[navigation]:::library
-    :core:network[network]:::library
-    :core:preference[preference]:::library
-    :core:testing[testing]:::library
     :core:ui[ui]:::library
   end
 
-  :core:data --> :core:common
-  :core:data -.-> :core:database
-  :core:data -.-> :core:device
-  :core:data --> :core:domain
-  :core:data --> :core:model
-  :core:data -.-> :core:network
-  :core:data -.-> :core:preference
-  :core:data -.-> :core:testing
-  :core:database --> :core:model
-  :core:database -.-> :core:testing
-  :core:device -.-> :core:common
-  :core:device --> :core:model
   :core:domain --> :core:common
   :core:domain --> :core:model
-  :core:domain -.-> :core:testing
   :core:navigation -.-> :core:common
-  :core:network --> :core:common
-  :core:network -.-> :core:domain
-  :core:network --> :core:model
-  :core:network -.-> :core:testing
-  :core:preference -.-> :core:common
-  :core:preference --> :core:model
-  :core:preference -.-> :core:testing
-  :core:testing --> :core:data
-  :core:testing --> :core:database
-  :core:testing --> :core:domain
-  :core:testing --> :core:model
-  :core:testing --> :core:network
-  :core:testing --> :core:preference
-  :core:testing --> :core:ui
   :core:ui -.-> :core:common
   :core:ui --> :core:designsystem
   :core:ui -.-> :core:domain
   :core:ui --> :core:model
-  :core:ui -.-> :core:testing
   :feature:buses -.-> :core:common
   :feature:buses -.-> :core:designsystem
   :feature:buses -.-> :core:domain
   :feature:buses --> :core:model
   :feature:buses -.-> :core:navigation
-  :feature:buses -.-> :core:testing
   :feature:buses -.-> :core:ui
   :feature:buses --> :feature:buses:navigation
   :feature:buses -.-> :feature:fares:navigation

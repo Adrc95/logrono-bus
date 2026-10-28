@@ -25,6 +25,7 @@ class RouteBuilder {
     private var longName: String = "6-CENTRO-EL CORTIJO"
     private var shortName: String = "6"
     private var color: String? = "rgba(146,76,72,1)"
+    private var internalId: Int = 6
 
     fun withTimetableId(value: String) = apply { timetableId = value }
 
@@ -34,11 +35,14 @@ class RouteBuilder {
 
     fun withColor(value: String?) = apply { color = value }
 
+    fun withInternalId(value: Int) = apply { internalId = value }
+
     fun build(): Route =
         Route(
             timetableId = timetableId,
             longName = longName,
             shortName = shortName,
             color = color,
+            internalId = internalId,
         )
 }
