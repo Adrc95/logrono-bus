@@ -2,10 +2,10 @@
 
 # Guía de arquitectura
 
-Aquí se explica cómo está organizado el código dentro de los módulos, qué puede saber cada capa y
-cómo encajan los source sets de multiplataforma. El razonamiento sigue la
-[guía oficial de arquitectura](https://developer.android.com/topic/architecture); el reparto en
-módulos está en la [guía de modularización](ModularizationLearningJourney.es.md).
+Esta guía explica cómo se organiza el código dentro de los módulos, de qué otras capas puede depender
+y cómo encajan los source sets de Kotlin Multiplatform. Sigue la
+[guía oficial de arquitectura](https://developer.android.com/topic/architecture). Para saber cómo se
+reparte el proyecto en módulos, consulta la [guía de modularización](ModularizationLearningJourney.es.md).
 
 ## Capas
 
@@ -45,9 +45,10 @@ classDef data fill:#BDB2FF,stroke:#000,stroke-width:2px,color:#000;
 classDef model fill:#FFD6A5,stroke:#000,stroke-width:2px,color:#000;
 ```
 
-Las flechas van en la dirección de las dependencias, y esa dirección la imponen los módulos:
-`core:model` no sabe nada, `core:domain` sabe de `core:model`, `core:data` sabe de los dos, y una
-funcionalidad sabe lo que necesita de `core` pero nada de otra funcionalidad.
+Las flechas indican qué módulos dependen de otros. Los límites entre módulos imponen esa dirección:
+`core:model` no depende de otros módulos del proyecto; `core:domain` depende de `core:model`; y
+`core:data` depende de ambos. Cada funcionalidad puede depender de los módulos de `core` que necesite,
+pero no de otra funcionalidad.
 
 ### `core:model`
 
@@ -60,35 +61,35 @@ Las reglas del servicio que no deben vivir en una pantalla: cuándo se da por te
 dirección lleva el bus que sigues, qué hora le toca a cada parada o en qué punto del trayecto está tu
 parada.
 
-Están aquí por dos motivos. Uno, son decisiones de negocio, no de presentación: la pantalla no debería
-tener que saber cuándo un viaje ha terminado para poder pintarlo. Y dos, al ser funciones puras se
-prueban una vez y valen en todas las plataformas, en lugar de repetir la misma comprobación en un test
-de interfaz de cada una.
+Estas reglas están aquí por dos motivos. Primero, describen el servicio, no la presentación: una
+pantalla no debería tener que saber cuándo termina un viaje para poder mostrarlo. Segundo, como son
+funciones puras, se pueden probar una vez y reutilizar en todas las plataformas, en vez de repetir la
+comprobación en tests de interfaz para cada una.
 
 ### `core:data`
 
-Es la única puerta a los datos. El dominio le pide lo que necesita y no sabe si viene de la red, de
-la base de datos o de las preferencias; el repositorio decide **de dónde** sale cada cosa, cuándo se
-refresca y qué se guarda.
+Es la única puerta de acceso a los datos. El dominio solicita lo que necesita sin saber si viene de
+la red, de la base de datos o de las preferencias. Los repositorios deciden **de dónde** sale cada
+cosa, cuándo se actualiza y qué se guarda.
 
 Aquí se traduce lo que llega de fuera, ya sea un JSON o una fila de la base de datos, a los modelos de
 dominio que usa el resto de la app.
 
 ### `core:network`, `core:database`, `core:preference`
 
-Los tres podrían vivir dentro de `core:data`. Están fuera para que cada funcionalidad cargue sólo lo
-que usa. Si el acceso al servicio estuviera en `core:data`, una pantalla que sólo lee el tema de la
-app acabaría cargando también el cliente del servicio, aunque no lo use.
+Estos módulos podrían formar parte de `core:data`, pero mantenerlos separados permite que cada
+funcionalidad incluya sólo los servicios que utiliza. Por ejemplo, una pantalla que sólo consulta el
+tema de la app no debería tener que incluir el cliente de red.
 
-Y lo que viene de fuera se queda dentro. Hacia arriba sólo llegan modelos de dominio: nunca un JSON ni
-una fila de una tabla.
+Los datos externos se quedan en estos módulos. Al resto de la app sólo llegan modelos de dominio, no
+respuestas JSON ni filas de la base de datos.
 
 ## La capa de interfaz
 
-Las pantallas no son las únicas que dibujan. `core:designsystem` pone el tema y las piezas básicas;
-`core:ui` pone los modelos de presentación compartidos, sus mappers y los componentes que aparecen en
-más de una pantalla, como el mapa. Todo lo que es de una sola funcionalidad se queda en esa
-funcionalidad.
+El código de interfaz se reparte entre dos módulos. `core:designsystem` proporciona el tema y los
+componentes básicos. `core:ui` contiene modelos de presentación compartidos, sus mappers y componentes
+que se usan en varias pantallas, como el mapa. Los componentes exclusivos de una funcionalidad se
+quedan en su propio módulo.
 
 Dentro de una funcionalidad, todas repiten la misma anatomía, y eso es lo que hace que una pantalla se
 pueda leer de un vistazo:
@@ -103,31 +104,32 @@ pueda leer de un vistazo:
 | `api/` | El contrato de destino que pueden usar otros módulos | Dejar salir tipos de la implementación |
 | `di/` | Cómo se construye cada pieza de esta funcionalidad | — |
 
-El view model traduce; la pantalla sólo pinta. Un `…DisplayModel` lleva textos, colores y booleanos ya
-resueltos, nunca un `Stop` ni un `DepartureTime`.
+El view model prepara los datos; la pantalla sólo los muestra. Un `…DisplayModel` contiene valores
+listos para usar, como textos, colores y booleanos, no objetos de dominio como `Stop` o
+`DepartureTime`.
 
-De ahí salen dos ventajas. El mapeo se prueba en `commonTest`, en todas las plataformas, sin un test de
-interfaz.
+Esta separación permite probar el mapeo en `commonTest` para todas las plataformas, sin necesidad de
+un test de interfaz, y mantiene las reglas de negocio fuera de la pantalla.
 
-El estado es un único `UiState` inmutable emitido desde un solo `StateFlow`, construido con
-`stateInViewModel(viewModel, initialValue)`, que comparte el flujo de arriba con `WhileSubscribed`
-para que una pantalla que no se ve no siga pidiendo datos. Los efectos que no son estado (avisos,
-navegación) van aparte, y ninguno se arranca en `init`: el view model sólo reacciona a algo que hace
-la pantalla o el usuario.
+Cada view model expone un único `UiState` inmutable mediante un `StateFlow`, creado con
+`stateInViewModel(viewModel, initialValue)`. El flujo de origen usa `WhileSubscribed`, así que deja de
+recopilar datos cuando la pantalla no está visible. Los efectos puntuales, como los avisos y la
+navegación, se mantienen separados del estado de la interfaz. El view model no inicia este trabajo en
+`init`: responde a acciones de la pantalla o del usuario.
 
 ## Inyección de dependencias
 
-Se resuelve al compilar. Cada módulo declara en `di/` qué construye y con qué, el grafo se genera en
-el build y lo comprueba el compilador, no el arranque de la app. Así no hay un localizador resuelto por
-reflexión en el camino caliente, y una dependencia que falta es un error de compilación en vez de un
-fallo en la primera pantalla.
+La inyección de dependencias se comprueba al compilar. Cada módulo declara en `di/` qué proporciona y
+qué necesita cada componente. El build genera el grafo de dependencias y el compilador lo verifica
+antes de ejecutar la app. Si falta una dependencia, el build falla; no se espera a que aparezca un
+error al abrir la primera pantalla.
 
 ## Navegación
 
-Los destinos son claves serializables que cada funcionalidad declara en su `api/`. La pila es una
-lista de esas claves que se guarda, y el shell la pinta. Como se serializa y se recuerda, el destino
-actual sobrevive a los cambios de configuración y a la muerte del proceso, y cualquier módulo puede
-abrir una funcionalidad conociendo sólo su clave.
+Cada funcionalidad declara sus destinos como claves serializables en `api/`. El shell muestra una
+pila de navegación guardada que contiene esas claves. Guardar la pila conserva el destino actual ante
+cambios de configuración y el cierre del proceso. Otros módulos pueden navegar a una funcionalidad
+usando su clave, sin depender de su implementación.
 
 ## Multiplataforma
 
@@ -141,9 +143,11 @@ plataforma sólo para lo que de verdad cambia:
 * **JVM** — la ventana de escritorio y el mapa en canvas.
 * **wasmJs** — el punto de entrada del navegador y el mapa web.
 
-`commonMain` sólo lleva código que compila para todos los targets.
+El código de `commonMain` debe compilar para todos los targets, así que no puede usar APIs exclusivas
+de la JVM. Por ejemplo, los cálculos de horarios, la proyección de tiles y los helpers de
+identificadores viven en source sets que sí pueden usar las APIs de JVM que necesitan.
 
-Dónde se nota la plataforma:
+Dónde se nota cada plataforma:
 
 | | Android | iOS | Escritorio | Web |
 |---|---|---|---|---|
@@ -152,16 +156,17 @@ Dónde se nota la plataforma:
 | Ubicación | APIs de Android | CoreLocation | no disponible | `navigator.geolocation` |
 | Preferencias | un fichero | un fichero | un fichero | `localStorage` |
 
-Cada fila es un `expect`/`actual`
+Cada fila se implementa mediante `expect`/`actual`, no con comprobaciones de plataforma dispersas por
+el código.
 
 ## Tests
 
-La estrategia, los comandos de cada plataforma y el porqué de los fakes están en el
-[README](../README.es.md#tests). Aquí sólo lo que depende de los source sets.
+El [README](../README.es.md#tests) explica la estrategia general, los comandos para cada plataforma y
+por qué se usan fakes. Esta sección se centra en cómo se distribuyen los tests entre los source sets.
 
-Los tests van junto al código que prueban: `commonTest` para lo que es igual en todas las plataformas
-y `jvmTest` para lo que necesita la JVM, como las pruebas que montan los repositorios reales contra el
-backend simulado.
+Los tests viven junto al código que comprueban: el comportamiento compartido se prueba en
+`commonTest`, mientras que los tests que necesitan APIs de la JVM —por ejemplo, los de integración que
+usan los repositorios reales y un backend simulado— van en `jvmTest`.
 
 Tres cosas no corren en todas partes. Los tests de `commonTest` de `shared` no pasan por el host de
 Android porque ese módulo es el único que declara `withHostTest`. Los del simulador de iOS necesitan

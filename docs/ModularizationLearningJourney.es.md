@@ -2,15 +2,14 @@
 
 # Guía de modularización
 
-Aquí se explica cómo se reparte Logroño Bus en módulos de Gradle y cómo el build impide que esa
-estructura se degrade. Es la guía de cómo se relacionan los módulos; cómo está escrito el código
-**dentro** de cada uno está en la [guía de arquitectura](ArchitectureLearningJourney.es.md). Para la
-teoría de la modularización, está la
-[guía oficial](https://developer.android.com/topic/modularization).
+Esta guía explica cómo se divide Logroño Bus en módulos de Gradle y cómo el build ayuda a mantener
+esa estructura coherente. Se centra en las dependencias entre módulos; para saber cómo se organiza el
+código **dentro** de cada uno, consulta la [guía de arquitectura](ArchitectureLearningJourney.es.md).
+Puedes consultar los [principios generales de modularización](https://developer.android.com/topic/modularization)
+en la documentación oficial.
 
-**IMPORTANTE:** cada módulo tiene su grafo de dependencias en su README
-([ejemplo con el módulo `shared`](../shared/README.md)), que ayuda a entender la estructura completa
-del proyecto.
+El README de cada módulo incluye su grafo de dependencias. Estos grafos ayudan a entender cómo encaja
+el proyecto; aquí tienes como ejemplo el [grafo de `shared`](../shared/README.md).
 
 ## Tipos de módulo
 
@@ -84,28 +83,29 @@ classDef jvm-library fill:#FDFFB6,stroke:#000,stroke-width:2px,color:#000;
 classDef kmp-library fill:#FFC6FF,stroke:#000,stroke-width:2px,color:#000;
 ```
 
-Una flecha continua es una dependencia `api` y una punteada es `implementation`. El color del nodo es
-el plugin de convención que aplica el módulo, no el plugin de Android que lleva debajo. Los mismos
-colores se usan en todos los READMEs generados.
+Una flecha continua representa una dependencia `api`; una punteada, una dependencia
+`implementation`. El color del nodo indica el plugin de convención que aplica el módulo, no el plugin
+de Android subyacente. Todos los README generados usan los mismos colores.
 
 </details>
 
-**Consejo:** un grafo de módulos (como el de arriba) viene bien al planificar una modularización,
-porque deja ver las dependencias entre módulos. Por eso cada módulo lleva el suyo, generado desde
-Gradle en vez de dibujado a mano.
+El grafo anterior muestra las dependencias entre módulos. El README de cada módulo incluye uno
+generado desde Gradle, así los diagramas reflejan la configuración del build y no dependen de cambios
+manuales.
 
 El proyecto tiene estos tipos de módulo:
 
 ### Los módulos de aplicación
 
-`androidApp`, `desktopApp` y `webApp` son los tres puntos de entrada. Sólo llevan lo que es de una
-plataforma: la actividad de Android, la configuración de firma y el manifiesto; la aplicación de
-escritorio y su empaquetado; el punto de entrada web y la salida de webpack. Dependen de `shared` y de
-los módulos de `core` que necesitan, y nadie depende de ellos.
+`androidApp`, `desktopApp` y `webApp` son los puntos de entrada de cada plataforma. Cada uno contiene
+la configuración necesaria para iniciar y empaquetar la app: la actividad, el manifiesto y la firma
+en Android; la aplicación y el empaquetado de escritorio; o el punto de entrada web y la salida de
+webpack. Dependen de `shared` y de los módulos de `core` que necesitan. Ningún otro módulo depende de
+estas aplicaciones.
 
-`shared` es el anfitrión de la interfaz: monta el shell, es el dueño del estado de navegación de la
-app y conecta las funcionalidades entre sí. Depende de todos los módulos de `core` y de todas las
-funcionalidades, y es el único módulo que conoce a todas.
+`shared` aloja la interfaz compartida. Monta el shell de la app, mantiene el estado de navegación
+principal y conecta las funcionalidades. Depende de todos los módulos de `core` y de todas las
+funcionalidades, por lo que es el único módulo que reúne la app completa.
 
 ### Módulos de funcionalidad
 
@@ -116,9 +116,9 @@ Cada funcionalidad son dos módulos de Gradle:
 * `feature:<nombre>:navigation` — sólo el contrato de destino: la clave que identifica la pantalla y
   la función que la pinta dentro del shell.
 
-Ese reparto existe para que una funcionalidad pueda navegar a otra sin ver su implementación:
-`feature:nearby` depende de `feature:stops:navigation`, nunca de `feature:stops`. El módulo de
-navegación son tres líneas de configuración porque sólo lleva el contrato y su serialización.
+Esta separación permite que una funcionalidad navegue a otra sin depender de su implementación. Por
+ejemplo, `feature:nearby` depende de `feature:stops:navigation`, no de `feature:stops`. El módulo de
+navegación es pequeño porque sólo contiene el contrato del destino y su serialización.
 
 Un módulo de funcionalidad no debe depender de otro módulo de funcionalidad. Si dos funcionalidades
 necesitan lo mismo, eso va a un módulo de `core`.
@@ -150,9 +150,9 @@ produce `shared` y arranca la interfaz de Compose.
 
 ## Plugins de convención
 
-Casi todos los módulos comparten el mismo bloque `plugins { }`, los mismos targets, la misma regla de
-`namespace` y casi el mismo stack de dependencias. En vez de copiar eso en cada `build.gradle.kts`, el
-build aplica un **plugin de convención** de `build-logic`:
+La mayoría de los módulos usa los mismos plugins, targets, reglas de `namespace` y dependencias
+básicas. Para no copiar esta configuración en cada `build.gradle.kts`, el build aplica un **plugin de
+convención** de `build-logic`:
 
 | Plugin | Qué aplica |
 |---|---|
@@ -182,15 +182,16 @@ kotlin {
 }
 ```
 
-Dos decisiones que merece la pena nombrar:
+Hay dos decisiones de implementación que conviene destacar:
 
-* Los plugins son **plugins de convención basados en clases**: un `Plugin<Project>` por
-  preocupación en `build-logic/convention`, cada uno registrado con su id en `gradlePlugin { }`. El
-  código que comparten vive en funciones auxiliares al lado (`configureKotlinMultiplatform`, `libs`,
-  `requiredLibrary`), así que ningún módulo lo repite.
-* `build-logic` reutiliza el catálogo de versiones de la raíz
-  (`versionCatalogs { create("libs") { from(files("../gradle/libs.versions.toml")) } }`), así que
-  subir una versión es una sola edición y llega también a los plugins.
+* Los plugins de convención están **basados en clases**: cada responsabilidad tiene su propio
+  `Plugin<Project>` en `build-logic/convention`, registrado con un id en `gradlePlugin { }`. La
+  configuración compartida se mantiene en funciones auxiliares cercanas, como
+  `configureKotlinMultiplatform`, `libs` y `requiredLibrary`, en vez de repetirse en cada módulo.
+* `build-logic` utiliza el catálogo de versiones de la raíz
+  (`versionCatalogs { create("libs") { from(files("../gradle/libs.versions.toml")) } }`). Así las
+  versiones de dependencias, incluidas las que usan los plugins de convención, se mantienen en un
+  único sitio.
 
 ## Grafos de dependencias
 
@@ -201,19 +202,19 @@ Cada módulo tiene su `README.md` con un grafo, por ejemplo
 * `./gradlew graphDump` escribe los grafos en un directorio temporal.
 * `./gradlew graphUpdate` reescribe el `README.md` de cada módulo, y lo crea si falta.
 
-La tarea lee el grafo real de dependencias de Gradle y apunta, para cada arista, si viene de una
-configuración `api` o `implementation`, que es lo que muestra el estilo de la flecha. Los nodos se
-agrupan en subgrafos anidados por ruta y se colorean por plugin de convención, así que un grafo dice
-de un vistazo si estás mirando una funcionalidad, un contrato de navegación, una librería de `core`,
-una aplicación o un módulo JVM normal.
+La tarea lee el grafo real de dependencias de Gradle. Para cada relación indica si usa `api` o
+`implementation`; el estilo de la flecha muestra cuál. Agrupa los nodos por ruta del módulo y los
+colorea según el plugin de convención, para distinguir fácilmente funcionalidades, contratos de
+navegación, módulos de `core`, aplicaciones y módulos JVM.
 
-Como la entrada es el propio build, los grafos no pueden desviarse del código: no hay una lista de
-módulos que mantener, y un módulo que deja de existir desaparece de todos los grafos en la siguiente
-ejecución. La tarea forma parte del build, así que `graphUpdate` reutiliza la caché de configuración y una
-ejecución sin cambios tarda segundos.
+Como los grafos se generan a partir de la configuración del build, se mantienen sincronizados sin
+necesidad de actualizar una lista de módulos por separado. Si se elimina un módulo, desaparecerá de
+los grafos al volver a ejecutar la tarea. `graphUpdate` forma parte del build y usa la caché de
+configuración, por lo que una ejecución sin cambios termina rápido.
 
-Lo que un grafo no hace es impedir nada. Si una funcionalidad depende de otra, el build compila igual;
-la dependencia aparece en el grafo en la siguiente ejecución, y ahí se ve.
+Los grafos documentan las dependencias, pero no imponen las reglas de arquitectura. Por ejemplo,
+Gradle seguirá compilando aunque una funcionalidad dependa de otra; esa relación aparecerá en el grafo
+la próxima vez que se genere.
 
 ## Fuentes
 

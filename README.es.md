@@ -9,15 +9,14 @@ Aplicación Logroño Bus
 ![build](https://github.com/Adrc95/logrono-bus/actions/workflows/build.yml/badge.svg)
 [![web demo](https://img.shields.io/badge/demo-adrc95.github.io%2Flogrono--bus-ff2d55)](https://adrc95.github.io/logrono-bus/)
 
-Logroño Bus es una app para consultar los autobuses urbanos de Logroño. Muestra las próximas salidas
-de las paradas que guardas en tus favoritos, las paradas que tienes cerca, la posición del bus en el
-mapa y un buscador con todas las paradas de la red. También puede leer el código de una marquesina
-con la cámara.
+Logroño Bus te ayuda a moverte en autobús por Logroño. Consulta las próximas salidas de tus paradas
+guardadas, encuentra paradas cercanas, sigue los autobuses en el mapa y busca en toda la red. También
+puedes usar la cámara para escanear el código de una parada.
 
 > [!IMPORTANT]
-> Es un proyecto personal y **no oficial**. No tiene relación con el Ayuntamiento de Logroño ni con la
-> empresa que gestiona los autobuses. Los datos salen del servicio web público del Ayuntamiento, con
-> horarios GTFS y avisos GTFS-Realtime.
+> Es un proyecto personal y **no oficial**. No está vinculado al Ayuntamiento de Logroño ni a la empresa
+> que gestiona los autobuses. La app utiliza el servicio público del Ayuntamiento para consultar los
+> horarios (GTFS) y las actualizaciones en tiempo real (GTFS-Realtime).
 
 La interfaz está escrita una sola vez con Compose Multiplatform y corre en Android, iOS, escritorio y
 web.
@@ -28,14 +27,15 @@ Si quieres ver cómo está organizado el código, hay dos documentos: la
 
 # Funcionalidades
 
-- **Paradas guardadas.** Las próximas salidas de cada parada que sigues, con el color de la línea y
-  el retraso.
-- **Cerca de ti.** Las paradas más cercanas y lo que se tarda en llegar andando.
-- **Seguimiento.** El autobús en el mapa, con su recorrido y las horas de llegada a cada parada. Al
-  llegar a cabecera, el viaje se cierra.
-- **Buscador.** Busca una parada por nombre y abre sus salidas.
-- **Escáner.** Lee el código de la marquesina con la cámara.
-- **Autobuses, líneas y tarifas.** Qué autobuses están circulando, las líneas de la red y las tarifas.
+- **Paradas guardadas.** Consulta las próximas salidas de las paradas que sigues, con el color de
+  cada línea y sus retrasos.
+- **Paradas cercanas.** Encuentra las paradas más próximas y calcula cuánto tardarías en llegar a pie.
+- **Seguimiento en directo.** Localiza un autobús en el mapa, sigue su recorrido y consulta la hora
+  prevista de llegada a cada parada. El seguimiento termina cuando llega a la cabecera.
+- **Buscador de paradas.** Busca por nombre y consulta las salidas de la parada.
+- **Escáner.** Escanea con la cámara el código de la marquesina que aparece en la parada.
+- **Autobuses, líneas y tarifas.** Consulta qué autobuses están circulando, explora las líneas de la
+  red y revisa las tarifas.
 
 ## Capturas
 
@@ -77,11 +77,12 @@ La misma interfaz corre también en escritorio y en web.
 
 # Entorno de desarrollo
 
-El proyecto usa Gradle a través del wrapper. Necesitas:
+El proyecto se compila con el wrapper de Gradle incluido. Antes de empezar, instala estas herramientas:
 
-- **JDK 17**, que es el toolchain de todos los módulos.
-- **Android Studio** con el SDK de Android 37, para la app de Android, la de escritorio y la web.
-- **Xcode**, para la de iOS (el proyecto está en [`/iosApp`](./iosApp)).
+- **JDK 17**: es la versión de Java que usan todos los módulos.
+- **Android Studio** y **Android SDK 37**: necesarios para Android y también para los targets de
+  escritorio y web.
+- **Xcode**: necesario para compilar y ejecutar la app de iOS, ubicada en [`/iosApp`](./iosApp).
 
 Abre la raíz del repositorio en el IDE y deja que importe el proyecto. Las versiones que importan
 están en [`gradle/libs.versions.toml`](./gradle/libs.versions.toml).
@@ -122,20 +123,19 @@ están en [`gradle/libs.versions.toml`](./gradle/libs.versions.toml).
 
 # Arquitectura
 
-El código está separado en capas: modelo, dominio, datos y presentación, con las dependencias en una
-sola dirección. La interfaz, escrita una vez con Compose Multiplatform, vive en dos módulos: el
-sistema de diseño y los componentes compartidos.
+El código se organiza en las capas de modelo, dominio, datos y presentación. Las dependencias avanzan
+en una sola dirección para que cada capa tenga una responsabilidad clara. La interfaz compartida, hecha
+con Compose Multiplatform, se reparte entre el módulo del sistema de diseño y el de componentes de UI.
 
-Cómo está organizada cada capa, qué puede hacer y qué no, está en la
-[guía de arquitectura](docs/ArchitectureLearningJourney.es.md).
+La [guía de arquitectura](docs/ArchitectureLearningJourney.es.md) explica cada capa y sus límites.
 
 # Modularización
 
-El proyecto está repartido en módulos de Gradle de tres tipos: `core`, funcionalidades y aplicaciones.
-Casi todos comparten plugins, targets y dependencias mediante plugins de convención, y cada módulo
-lleva su grafo de dependencias en su propio README.
+Los módulos de Gradle se agrupan en tres tipos: bibliotecas `core`, funcionalidades y aplicaciones.
+Los plugins de convención mantienen coherentes la configuración de plugins, targets y dependencias.
+Cada módulo incluye su propio grafo de dependencias en el README.
 
-El detalle está en la [guía de modularización](docs/ModularizationLearningJourney.es.md).
+Consulta la [guía de modularización](docs/ModularizationLearningJourney.es.md) para más detalles.
 
 # Compilar
 
@@ -161,15 +161,15 @@ Spotless mantiene el build ordenado: ktlint impone el estilo. `./gradlew spotles
 
 # Tests
 
-Los componentes de datos se declaran como interfaces, así que un test puede sustituir la implementación
-real por un fake sin tocar el código de producción. Los fakes viven solo en `core:testing`.
+Las dependencias de la capa de datos se definen mediante interfaces. Así, los tests pueden sustituir
+las implementaciones reales por fakes sencillos, que se guardan en `core:testing`.
 
-Se prueba cada capa: las reglas del dominio, los mappers y los view models. Además, las pruebas de
-integración usan los repositorios reales contra un backend simulado y llegan hasta el view model.
+La suite cubre las reglas del dominio, los mappers y los view models. También hay tests de integración
+que prueban los repositorios reales con un backend HTTP simulado y siguen los datos hasta el view model.
 
-Los tests que son para cualquier plataforma están en `commonTest`, y se ejecutan en todas. Los que usan
-el backend simulado están en `jvmTest`: ese backend monta la app entera, con las preferencias reales, y
-en la JVM esas preferencias escriben en un fichero.
+Los tests independientes de la plataforma están en `commonTest` y se ejecutan en cada target
+compatible. Los que necesitan el backend simulado están en `jvmTest`; utilizan la implementación real
+de preferencias, que en la JVM guarda los datos en un fichero.
 
 ## Por qué fakes y no mocks
 
@@ -199,8 +199,14 @@ es sobre el estado que vería el usuario.
 | Simulador de iOS | `./gradlew :shared:iosSimulatorArm64Test`, en un Mac con Apple Silicon |
 | Navegador | `./gradlew wasmJsBrowserTest`, con Karma |
 
-Con `LIVE_API=1 ./gradlew jvmTest` se añaden las pruebas que van contra el servicio real. Sin esa
-variable se saltan, para que el build normal no dependa de la red.
+Para incluir los probes de JVM que consultan el servicio real, define `LIVE_API=1`:
+
+```bash
+LIVE_API=1 ./gradlew jvmTest
+```
+
+Si no defines esa variable, los probes se omiten y la ejecución habitual de tests no necesita conexión
+a internet.
 
 # Licencia
 Desarrollado por Adrián Cabrera, 2026.

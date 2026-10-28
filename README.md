@@ -9,31 +9,31 @@ Logroño Bus App
 ![build](https://github.com/Adrc95/logrono-bus/actions/workflows/build.yml/badge.svg)
 [![web demo](https://img.shields.io/badge/demo-adrc95.github.io%2Flogrono--bus-ff2d55)](https://adrc95.github.io/logrono-bus/)
 
-Logroño Bus is an app for checking the urban buses in Logroño. It shows the next departures from the
-stops you save, the stops around you, where each bus is on the map, and a search over every stop in
-the network. It can also read a stop sign with the camera.
+Logroño Bus helps you plan journeys on Logroño’s urban bus network. Check upcoming departures at
+saved stops, find nearby stops, track buses on a map and search the full stop list. You can also use
+your camera to scan the code displayed at a bus stop.
 
 > [!IMPORTANT]
-> This is a personal, **unofficial** project. It is not related to the Ayuntamiento de Logroño (the
-> city council) or to the company that runs the buses. The data comes from the council's public web
-> service, with GTFS timetables and GTFS-Realtime updates.
+> This is a personal, **unofficial** project. It is not affiliated with Logroño City Council or the
+> company that operates the buses. The app uses the council’s public service for timetable data (GTFS)
+> and real-time updates (GTFS-Realtime).
 
 The UI is written once with Compose Multiplatform and runs on Android, iOS, desktop and web.
 
 If you want to see how the code is organised, there are two documents: the
 [modularization guide](docs/ModularizationLearningJourney.md) and the
-[architecture guide](docs/ArchitectureLearningJourney.md). Both have a
-[Spanish](docs/ArchitectureLearningJourney.es.md) version.
+[architecture guide](docs/ArchitectureLearningJourney.md). The architecture guide is also available in
+[Spanish](docs/ArchitectureLearningJourney.es.md).
 
 # Features
 
-- **Saved stops.** The next departures from each stop you follow, with the line colour and the delay.
-- **Near you.** The closest stops and how long they are on foot.
-- **Tracking.** The bus on the map, with its route and the arrival time at each stop. When it reaches
-  the terminus, the trip is closed.
-- **Search.** Find a stop by name and open its departures.
-- **Scanner.** Read the code on the stop sign with the camera.
-- **Buses, lines and fares.** Which buses are running, the lines of the network and the fares.
+- **Saved stops.** See upcoming departures for the stops you follow, including line colours and delays.
+- **Nearby stops.** Find the closest stops and check how long it takes to walk to them.
+- **Live tracking.** See a bus on the map, follow its route and check expected arrival times at each
+  stop. Tracking ends when the bus reaches its terminus.
+- **Stop search.** Search by stop name and view its departures.
+- **Stop scanner.** Scan the code displayed at a stop using your camera.
+- **Buses, lines and fares.** Check which buses are running, explore the network’s lines and view fares.
 
 ## Screenshots
 
@@ -75,11 +75,11 @@ The same UI also runs on desktop and web.
 
 # Development environment
 
-The project uses Gradle through the wrapper. You need:
+Build the project with the included Gradle wrapper. Install these tools first:
 
-- **JDK 17**, the toolchain of every module.
-- **Android Studio** with the Android SDK 37, for the Android app, the desktop app and the web app.
-- **Xcode**, for the iOS app (the project is in [`/iosApp`](./iosApp)).
+- **JDK 17** — the Java toolchain used by all modules.
+- **Android Studio** and **Android SDK 37** — needed for Android and for the desktop and web targets.
+- **Xcode** — needed to build and run the iOS app in [`/iosApp`](./iosApp).
 
 Open the repository root in your IDE and let it import the project. The versions that matter are in
 [`gradle/libs.versions.toml`](./gradle/libs.versions.toml).
@@ -120,20 +120,20 @@ Open the repository root in your IDE and let it import the project. The versions
 
 # Architecture
 
-The code is split into layers: model, domain, data and presentation, with dependencies pointing one
-way. The UI, written once with Compose Multiplatform, lives in two modules: the design system and the
-shared components.
+The code is organised into model, domain, data and presentation layers. Dependencies flow in one
+direction, which keeps each layer focused on its role. The shared Compose Multiplatform UI is split
+between the design-system module and the shared UI components module.
 
-How each layer is organised, what it may do and what it must not, is in the
-[architecture guide](docs/ArchitectureLearningJourney.md).
+The [architecture guide](docs/ArchitectureLearningJourney.md) explains each layer and the boundaries
+it follows.
 
 # Modularization
 
-The project is split into three kinds of Gradle modules: `core`, features and applications. Almost
-all of them share plugins, targets and dependencies through convention plugins, and each module
-carries its dependency graph in its own README.
+Gradle modules are grouped into three types: `core` libraries, feature modules and applications.
+Convention plugins keep plugin, target and dependency setup consistent across modules. Each module’s
+README includes its dependency graph.
 
-The detail is in the [modularization guide](docs/ModularizationLearningJourney.md).
+See the [modularization guide](docs/ModularizationLearningJourney.md) for details.
 
 # Build
 
@@ -159,15 +159,15 @@ Spotless keeps the build tidy: ktlint enforces the style. `./gradlew spotlessChe
 
 # Tests
 
-Data components are declared as interfaces, so a test can replace the real implementation with a fake
-without touching production code. The fakes live in `core:testing` and nowhere else.
+Data-layer dependencies are exposed as interfaces. Tests can replace their production implementations
+with lightweight fakes, all kept in `core:testing`.
 
-Every layer is tested: the domain rules, the mappers and the view models. On top of that, integration
-tests use the real repositories against a stubbed backend and go all the way to the view model.
+The suite covers domain rules, mappers and view models. Integration tests also exercise the real
+repositories against a stubbed HTTP backend, following the data through to the view model.
 
-Tests that work on any platform live in `commonTest` and run on all of them. The ones using the stubbed
-backend live in `jvmTest`: that backend wires the whole app, real preferences included, and on the JVM
-those preferences write to a file.
+Platform-independent tests live in `commonTest` and run on each supported target. Tests that need the
+stubbed backend live in `jvmTest`; they use the real preferences implementation, which stores its data
+in a file on the JVM.
 
 ## Why fakes and not mocks
 
@@ -197,8 +197,14 @@ the state the user would see.
 | iOS simulator | `./gradlew :shared:iosSimulatorArm64Test`, on an Apple Silicon Mac |
 | Browser | `./gradlew wasmJsBrowserTest`, through Karma |
 
-`LIVE_API=1 ./gradlew jvmTest` adds the probes that hit the real service. Without that variable they are
-skipped, so the normal build does not depend on the network.
+Set `LIVE_API=1` to include the JVM probes that call the live service:
+
+```bash
+LIVE_API=1 ./gradlew jvmTest
+```
+
+Without this variable, those probes are skipped, so the regular test run does not require a network
+connection.
 
 # License
 Designed and developed by Adrián Cabrera, 2026.

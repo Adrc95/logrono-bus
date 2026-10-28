@@ -2,15 +2,13 @@
 
 # Modularization guide
 
-Here you will learn how Logroño Bus is split into Gradle modules and how the build
-keeps that structure from decaying. This is the guide for how modules relate to each other; how the
-code **inside** each one is written is in the
-[architecture guide](ArchitectureLearningJourney.md). For the theory behind modularization,
-check out [the official guidance](https://developer.android.com/topic/modularization).
+This guide explains how Logroño Bus is divided into Gradle modules and how the build helps keep that
+structure consistent. It focuses on how modules depend on one another; for how code is organised
+**inside** each module, see the [architecture guide](ArchitectureLearningJourney.md). For the general
+principles, see the [official modularization guidance](https://developer.android.com/topic/modularization).
 
-**IMPORTANT:** Every module has a dependency graph in its README
-([example for the `shared` module](../shared/README.md)) which can be useful for understanding the
-overall structure of the project.
+Each module's README contains its dependency graph. These graphs help you understand how the project
+fits together; see the [graph for `shared`](../shared/README.md) as an example.
 
 ## Module types
 
@@ -84,28 +82,28 @@ classDef jvm-library fill:#FDFFB6,stroke:#000,stroke-width:2px,color:#000;
 classDef kmp-library fill:#FFC6FF,stroke:#000,stroke-width:2px,color:#000;
 ```
 
-A solid arrow is an `api` dependency, a dotted arrow is `implementation`. The colour of a node is the
-convention plugin the module applies, not the Android plugin under it. We use the same colours in all
-the generated READMEs.
+A solid arrow represents an `api` dependency; a dotted arrow represents an `implementation`
+dependency. Node colours show the convention plugin applied by the module, not the underlying Android
+plugin. The generated READMEs use the same colour scheme.
 
 </details>
 
-**Top tip:** a module graph (shown above) can be useful during modularization planning for
-visualizing dependencies between modules. That is why every module here carries one, generated from
-Gradle rather than drawn by hand.
+The graph above illustrates module dependencies. Every module README includes a graph generated from
+Gradle, so the diagrams reflect the build configuration instead of relying on manual updates.
 
 The project contains the following types of modules:
 
 ### The app modules
 
-`androidApp`, `desktopApp` and `webApp` are the three entry points. They hold only what belongs to a
-platform: the Android activity, the signing configuration and the manifest; the desktop application
-and its packaging; the web entry point and its webpack output. They depend on `shared` and on the
-core modules they need, and nothing depends on them.
+`androidApp`, `desktopApp` and `webApp` are the platform entry points. Each contains the setup needed
+to launch and package the app on its platform: the Android activity, manifest and signing
+configuration; the desktop application and packaging; or the web entry point and webpack output.
+They depend on `shared` and any required `core` modules. Other modules do not depend on these app
+modules.
 
-`shared` is the UI host: it composes the shell, owns the app-level navigation state and wires the
-features together. It depends on all the `core` modules and on every feature, and it is the only
-module that knows about all of them.
+`shared` hosts the shared UI. It builds the app shell, owns top-level navigation state and connects
+the features. It depends on all `core` modules and all feature modules, making it the only module that
+brings the full app together.
 
 ### Feature modules
 
@@ -116,10 +114,9 @@ Each feature is a pair of Gradle modules:
 * `feature:<name>:navigation` — only the destination contract: the key that identifies the screen and
   the function that renders it inside the shell.
 
-That split exists so a feature can navigate to another feature without seeing its implementation:
-`feature:nearby` depends on `feature:stops:navigation`, never on `feature:stops`. The navigation
-module is three lines of build configuration because it only carries the contract and its
-serialization.
+This split lets one feature navigate to another without depending on its implementation. For
+example, `feature:nearby` depends on `feature:stops:navigation`, not on `feature:stops`. The navigation
+module stays small because it contains only the destination contract and its serialization.
 
 A feature module must not depend on another feature module. If two features need the same thing, it
 belongs in a `core` module.
@@ -151,9 +148,8 @@ feature or an app module. Their order is the order of the layers:
 
 ## Convention plugins
 
-Almost every module shares the same `plugins { }` block, the same targets, the same namespace rule and
-almost the same dependency stack. Instead of copying that into every `build.gradle.kts`, the build
-applies a **convention plugin** from `build-logic`:
+Most modules use the same plugins, targets, namespace rules and base dependencies. To avoid copying
+that setup into every `build.gradle.kts`, the build applies a **convention plugin** from `build-logic`:
 
 | Plugin | What it applies |
 |---|---|
@@ -183,15 +179,15 @@ kotlin {
 }
 ```
 
-Two decisions worth naming:
+Two implementation choices are worth noting:
 
-* The plugins are **class-based convention plugins**: one `Plugin<Project>` per concern in
-  `build-logic/convention`, each registered with its own id in `gradlePlugin { }`. The code they
-  share lives in helper functions next to them (`configureKotlinMultiplatform`, `libs`,
-  `requiredLibrary`), so a module never repeats it.
-* `build-logic` reuses the root version catalog
-  (`versionCatalogs { create("libs") { from(files("../gradle/libs.versions.toml")) } }`), so a
-  version bump is one edit and it reaches the plugins too.
+* Convention plugins are **class-based**: each concern has its own `Plugin<Project>` in
+  `build-logic/convention`, registered with an id in `gradlePlugin { }`. Shared setup is kept in
+  nearby helper functions such as `configureKotlinMultiplatform`, `libs` and `requiredLibrary`, rather
+  than repeated in each module.
+* `build-logic` uses the root version catalog
+  (`versionCatalogs { create("libs") { from(files("../gradle/libs.versions.toml")) } }`). This keeps
+  dependency versions in one place, including versions used by the convention plugins.
 
 ## Dependency graphs
 
@@ -203,19 +199,19 @@ uses:
 * `./gradlew graphDump` writes the graphs to a scratch directory.
 * `./gradlew graphUpdate` rewrites the `README.md` of every module, creating it when missing.
 
-The task reads the real dependency graph from Gradle and records, for each edge, whether it came
-from an `api` or an `implementation` configuration, which is what the arrow style shows. Nodes are
-grouped into nested subgraphs by path and coloured by convention plugin, so a graph tells you at a
-glance whether you are looking at a feature, a navigation contract, a core library, an application or
-a plain JVM module.
+The task reads Gradle's actual dependency graph. For each edge, it records whether the dependency uses
+`api` or `implementation`; the arrow style shows which one. It groups nodes by module path and colours
+them by convention plugin, making it easy to distinguish features, navigation contracts, core
+libraries, applications and JVM modules.
 
-Because the input is the build itself, the graphs cannot drift from the code: there is no list of
-modules to maintain, and a module that stops existing disappears from every graph on the next run.
-The task is part of the build, so `graphUpdate` reuses the configuration cache and a no-op run takes
-seconds.
+Because the graphs come from the build configuration, they stay in sync without a separate module
+list to maintain. Modules that are removed from the build disappear from the graphs the next time you
+run the task. `graphUpdate` is part of the build and uses the configuration cache, so an unchanged run
+finishes quickly.
 
-What a graph does not do is prevent anything. If a feature depends on another feature, the build still
-compiles; the dependency shows up in the graph on the next run, and that is where you see it.
+The graphs document dependencies but do not enforce architecture rules. For example, Gradle will
+still compile if one feature depends on another; that dependency will appear in the graph when it is
+next generated.
 
 ## Sources
 

@@ -2,10 +2,10 @@
 
 # Architecture guide
 
-Here you will learn how the code inside the modules is organised, what each
-layer is allowed to know, and how the multiplatform source sets fit into that. The reasoning follows
-[the official architecture guidance](https://developer.android.com/topic/architecture); the module
-split is described in the [modularization guide](ModularizationLearningJourney.md).
+This guide explains how code is organised inside the modules, what each layer may depend on, and how
+Kotlin Multiplatform source sets fit together. It follows the
+[official architecture guidance](https://developer.android.com/topic/architecture). For how the
+project is split into modules, see the [modularization guide](ModularizationLearningJourney.md).
 
 ## Layers
 
@@ -45,9 +45,9 @@ classDef data fill:#BDB2FF,stroke:#000,stroke-width:2px,color:#000;
 classDef model fill:#FFD6A5,stroke:#000,stroke-width:2px,color:#000;
 ```
 
-The direction of the arrows is the direction of the dependencies, and it is enforced by the module
-boundaries: `core:model` knows nothing, `core:domain` knows `core:model`, `core:data` knows both, and
-a feature knows whatever it needs from `core` but nothing from another feature.
+The arrows show which modules depend on which others. Module boundaries enforce this direction:
+`core:model` has no project dependencies; `core:domain` depends on `core:model`; and `core:data`
+depends on both. A feature may depend on the `core` modules it needs, but not on another feature.
 
 ### `core:model`
 
@@ -60,34 +60,34 @@ cycle.
 The rules of the service that should not live in a screen: when a trip is over, which direction the bus
 you follow is running, what time each stop is due, or how far along its way your stop is.
 
-They live here for two reasons. One, they are business decisions, not presentation ones: a screen
-should not have to know that a trip has ended in order to paint it. And two, being pure functions they
-are tested once and hold on every platform, instead of repeating the same check in a UI test for each
-one.
+These rules belong here for two reasons. First, they describe the service, not the presentation: a
+screen should not need to know when a trip has ended just to display it. Second, because the rules are
+pure functions, they can be tested once and reused on every platform instead of being rechecked in UI
+tests for each one.
 
 ### `core:data`
 
-It is the only door to the data. The domain asks for what it needs and does not know whether it comes
-from the network, the database or the preferences; the repository decides *where* each thing comes
-from, when it is refreshed and what gets stored.
+It is the only door to the data. The domain requests what it needs without knowing whether it comes
+from the network, database or preferences. Repositories choose *where* the data comes from, when to
+refresh it and what to store.
 
 Whatever arrives from outside, a JSON payload or a table row, is translated here into the domain models
 the rest of the app uses.
 
 ### `core:network`, `core:database`, `core:preference`
 
-All three could live inside `core:data`. They are outside so that each feature carries only what it
-uses. If service access lived in `core:data`, a screen that only reads the app theme would end up
-loading the service client too, even though it does not use it.
+These modules could be part of `core:data`, but keeping them separate lets each feature include only
+the services it uses. For example, a screen that only reads the app theme should not need to include
+the network client.
 
-And whatever comes from outside stays inside. Only domain models travel up: never a JSON payload nor a
-table row.
+Data from external systems stays in these modules. Only domain models pass to the rest of the app—not
+raw JSON payloads or database rows.
 
 ## The UI layer
 
-Screens are not the only thing that draws. `core:designsystem` provides the theme and the basic
-pieces; `core:ui` provides the shared display models, their mappers and the components that appear on
-more than one screen, such as the map. Anything belonging to a single feature stays in that feature.
+UI code is split between two modules. `core:designsystem` provides the theme and basic components.
+`core:ui` contains shared display models, their mappers and components used by multiple screens, such
+as the map. Components used by only one feature stay in that feature's module.
 
 Inside a feature, they all repeat the same anatomy, which is what makes a screen predictable to read:
 
@@ -101,31 +101,31 @@ Inside a feature, they all repeat the same anatomy, which is what makes a screen
 | `api/` | The destination contract other modules may use | Leak implementation types |
 | `di/` | How each piece of this feature is built | — |
 
-The view model translates; the screen only paints. A `…DisplayModel` carries strings, colours and
-booleans already resolved, never a `Stop` or a `DepartureTime`.
+The view model prepares the data; the screen only displays it. A `…DisplayModel` contains ready-to-use
+values such as strings, colours and booleans—not domain objects such as `Stop` or `DepartureTime`.
 
-Two things follow. The mapping is tested in `commonTest` on every platform, without a UI test. And the
-screen is left with no room to start collecting business rules.
+This separation lets `commonTest` verify the mapping on every platform without a UI test. It also
+keeps business rules out of the screen code.
 
-The state is a single immutable `UiState` emitted from one `StateFlow`, produced with
-`stateInViewModel(viewModel, initialValue)`, which shares the upstream flow with
-`WhileSubscribed` so a screen that is not visible does not keep polling. Effects that are not state
-(snackbars, navigation) are separate, and none of them start in `init`: a view model only reacts to
-something the screen or the user does.
+Each view model exposes one immutable `UiState` through a `StateFlow`, created with
+`stateInViewModel(viewModel, initialValue)`. The upstream flow uses `WhileSubscribed`, so it stops
+collecting while its screen is not visible. One-off effects such as snackbars and navigation are kept
+separate from UI state. View models do not start this work in `init`; they respond to screen or user
+actions.
 
 ## Dependency injection
 
-It is resolved at compile time. Each module declares in `di/` what it builds and with what, the graph
-is generated during the build and checked by the compiler, not when the app starts. So there is no
-service locator answered through reflection on a hot path, and a missing dependency is a build error
-instead of a failure on the first screen.
+Dependency injection is checked at compile time. Each module declares in `di/` what it provides and
+what those components require. The build generates the dependency graph and the compiler checks it
+before the app runs. A missing dependency therefore fails the build, rather than causing an error when
+a screen first opens.
 
 ## Navigation
 
-The destinations are serializable keys each feature declares in its `api/`. The back stack is a list
-of those keys that gets saved, and the shell renders it. Because it is serialized and remembered, the
-current destination survives configuration changes and process death, and any module can open a
-feature knowing only its key.
+Each feature declares its destinations as serializable keys in `api/`. The app shell renders a saved
+back stack containing those keys. Saving the stack preserves the current destination across
+configuration changes and process death. Other modules can navigate to a feature using its key,
+without depending on its implementation.
 
 ## Multiplatform
 
@@ -139,9 +139,9 @@ only for what genuinely differs:
 * **JVM** — the desktop window and the canvas map.
 * **wasmJs** — the browser entry point and the web map.
 
-The rule is that anything JVM-specific stays out of `commonMain`: the timetable maths, the tile
-projection and the identifier helpers live in the platform source sets that use them, and `commonMain`
-only holds code that compiles for every target.
+Code in `commonMain` must compile for every target, so JVM-only APIs cannot be used there. For
+example, the timetable calculations, tile projection and identifier helpers live in source sets that
+can use the JVM APIs they need.
 
 Where the platform shows through:
 
@@ -156,12 +156,12 @@ Each row is an `expect`/`actual`, not an `if (isAndroid)` scattered through the 
 
 ## Testing
 
-The strategy, the commands per platform and why the fakes are used live in the
-[README](../README.md#tests). This section only covers what depends on the source sets.
+The [README](../README.md#tests) explains the overall test strategy, platform-specific commands and
+why the project uses fakes. This section focuses on how tests are split across source sets.
 
-Tests sit next to the code they check: `commonTest` for what is the same on every platform and
-`jvmTest` for what needs the JVM, such as the ones wiring the real repositories against the stubbed
-backend.
+Tests live alongside the code they cover: shared behavior is tested in `commonTest`, while tests that
+need JVM APIs—such as integration tests using the real repositories and a stubbed backend—live in
+`jvmTest`.
 
 Three things do not run everywhere. The `shared` `commonTest` ones do not go through the Android host,
 because that module is the only one declaring `withHostTest`. The iOS simulator ones need an Apple
