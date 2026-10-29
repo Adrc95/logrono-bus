@@ -60,6 +60,11 @@ class MainDispatcherRule(
     fun tearDown() {
         scopes.forEach(CoroutineScope::cancel)
         scopes.clear()
+        // A ViewModel's scope is not tracked and outlives the test body, so its WhileSubscribed
+        // timeouts are still scheduled here. Running them while Main is still installed keeps the
+        // cancellation from failing on the dispatcher that resetMain removes, which surfaces as an
+        // uncaught exception in the next test.
+        runCatching { testDispatcher.scheduler.advanceUntilIdle() }
         Dispatchers.resetMain()
     }
 }
