@@ -79,7 +79,7 @@ Build the project with the included Gradle wrapper. Install these tools first:
 
 - **JDK 17** — the Java toolchain used by all modules.
 - **Android Studio** and **Android SDK 37** — needed for Android and for the desktop and web targets.
-- **Xcode** — needed to build and run the iOS app in [`/iosApp`](./iosApp).
+- **Xcode** — needed to build and run the iOS app in [`app/iosApp`](./app/iosApp).
 
 Open the repository root in your IDE and let it import the project. The versions that matter are in
 [`gradle/libs.versions.toml`](./gradle/libs.versions.toml).
@@ -129,9 +129,11 @@ it follows.
 
 # Modularization
 
-Gradle modules are grouped into three types: `core` libraries, feature modules and applications.
-Convention plugins keep plugin, target and dependency setup consistent across modules. Each module’s
-README includes its dependency graph.
+Gradle modules are grouped into three types: `core` libraries, feature modules and applications. The
+shared UI host and platform application projects are grouped in `app/`; `androidApp`, `webApp`,
+and `desktopApp` are Gradle modules, while `iosApp` remains a native Xcode project. Convention
+plugins keep plugin, target and dependency setup consistent across modules. Each module’s README
+includes its dependency graph.
 
 See the [modularization guide](docs/ModularizationLearningJourney.md) for details.
 
@@ -139,18 +141,19 @@ See the [modularization guide](docs/ModularizationLearningJourney.md) for detail
 
 | Platform | Module | How to run it |
 |---|---|---|
-| Android | `:androidApp` | `./gradlew :androidApp:assembleDebug` leaves the APK in `androidApp/build/outputs/apk/debug/` |
-| iOS | `/iosApp` | open the project in Xcode and run it from there |
-| Desktop | `:desktopApp` | `./gradlew :desktopApp:run` |
-| Web | `:webApp` | `./gradlew :webApp:wasmJsBrowserDistribution` leaves the bundle in `webApp/build/dist/wasmJs/productionExecutable` |
+| Android | `:app:androidApp` | `./gradlew :app:androidApp:assembleDebug` leaves the APK in `app/androidApp/build/outputs/apk/debug/` |
+| iOS | `app/iosApp` (Xcode project) | open the project in Xcode and run it from there |
+| Desktop | `:app:desktopApp` | `./gradlew :app:desktopApp:run` |
+| Web | `:app:webApp` | `./gradlew :app:webApp:wasmJsBrowserDistribution` leaves the bundle in `app/webApp/build/dist/wasmJs/productionExecutable` |
 
-The iOS app is the only one not built by Gradle, because it needs Xcode to link the framework.
+The `app/shared` module is Gradle project `:app:shared`. The iOS app is the only one not built by
+Gradle, because it needs Xcode to link the framework from that module.
 
 The Android `versionCode` and `versionName` come from `-PversionNum` when you pass it. For a release
 build, the keystore is read from `keystore.properties`.
 
-`./gradlew :androidApp:assembleRelease` runs R8 with `androidApp/proguard-rules.pro` and writes an
-`mapping.txt` under `androidApp/build/outputs/mapping/release/`. Keep that file: it is the only way to
+`./gradlew :app:androidApp:assembleRelease` runs R8 with `app/androidApp/proguard-rules.pro` and writes an
+`mapping.txt` under `app/androidApp/build/outputs/mapping/release/`. Keep that file: it is the only way to
 read a release crash, and it must never be published because it undoes the obfuscation. The debug
 variant carries an `.debug` application id suffix, so both can be installed side by side.
 
@@ -194,7 +197,7 @@ the state the user would see.
 | JVM, one module | `./gradlew :feature:tracking:jvmTest` |
 | Android host | `./gradlew testAndroidHostTest`, only `shared` |
 | Android device | `./gradlew :core:database:connectedAndroidDeviceTest`, with the phone plugged in and USB debugging on |
-| iOS simulator | `./gradlew :shared:iosSimulatorArm64Test`, on an Apple Silicon Mac |
+| iOS simulator | `./gradlew :app:shared:iosSimulatorArm64Test`, on an Apple Silicon Mac |
 | Browser | `./gradlew wasmJsBrowserTest`, through Karma |
 
 Set `LIVE_API=1` to include the JVM probes that call the live service:

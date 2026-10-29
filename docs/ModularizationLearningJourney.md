@@ -8,7 +8,7 @@ structure consistent. It focuses on how modules depend on one another; for how c
 principles, see the [official modularization guidance](https://developer.android.com/topic/modularization).
 
 Each module's README contains its dependency graph. These graphs help you understand how the project
-fits together; see the [graph for `shared`](../shared/README.md) as an example.
+fits together; see the [graph for `:app:shared`](../app/shared/README.md) as an example.
 
 ## Module types
 
@@ -39,17 +39,20 @@ graph TB
       :feature:nearby:navigation[navigation]:::navigation
     end
   end
-  :androidApp[androidApp]:::application
-  :desktopApp[desktopApp]:::jvm-library
-  :webApp[webApp]:::kmp-library
-  :shared[shared]:::library
+  subgraph :app
+    direction TB
+    :app:androidApp[androidApp]:::application
+    :app:desktopApp[desktopApp]:::jvm-library
+    :app:webApp[webApp]:::kmp-library
+    :app:shared[shared]:::library
+  end
 
-  :androidApp -.-> :shared
-  :desktopApp -.-> :shared
-  :webApp -.-> :shared
-  :shared -.-> :feature:nearby
-  :shared -.-> :feature:tracking
-  :shared -.-> :feature:favourites
+  :app:androidApp -.-> :app:shared
+  :app:desktopApp -.-> :app:shared
+  :app:webApp -.-> :app:shared
+  :app:shared -.-> :feature:nearby
+  :app:shared -.-> :feature:tracking
+  :app:shared -.-> :feature:favourites
   :feature:nearby --> :feature:nearby:navigation
   :feature:nearby -.-> :core:ui
   :feature:nearby -.-> :core:domain
@@ -95,15 +98,18 @@ The project contains the following types of modules:
 
 ### The app modules
 
-`androidApp`, `desktopApp` and `webApp` are the platform entry points. Each contains the setup needed
-to launch and package the app on its platform: the Android activity, manifest and signing
-configuration; the desktop application and packaging; or the web entry point and webpack output.
-They depend on `shared` and any required `core` modules. Other modules do not depend on these app
-modules.
+`:app:androidApp`, `:app:desktopApp` and `:app:webApp` are the platform entry points. Their projects
+and the shared UI host are grouped under `app/`. Each app module contains the setup needed to launch
+and package its platform: the Android activity, manifest and signing configuration; the desktop
+application and packaging; or the web entry point and webpack output. They depend on `:app:shared` and
+any required `core` modules. Other modules do not depend on these app modules.
 
-`shared` hosts the shared UI. It builds the app shell, owns top-level navigation state and connects
-the features. It depends on all `core` modules and all feature modules, making it the only module that
-brings the full app together.
+`:app:shared` hosts the shared UI. It builds the app shell, owns top-level navigation state and
+connects the features. It depends on all `core` modules and all feature modules, making it the only
+module that brings the full app together.
+
+`app/iosApp` is grouped alongside these projects but remains an Xcode project, not a Gradle module.
+It links the iOS framework produced by `:app:shared`.
 
 ### Feature modules
 
@@ -143,8 +149,8 @@ feature or an app module. Their order is the order of the layers:
 
 ### Miscellaneous modules
 
-`iosApp` is not a Gradle module: it is the Xcode project that links the static framework produced by
-`shared` and starts the Compose UI.
+`app/iosApp` is not a Gradle module: it is the Xcode project that links the static framework produced
+by `:app:shared` and starts the Compose UI.
 
 ## Convention plugins
 

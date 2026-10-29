@@ -50,9 +50,9 @@ import dev.adrc95.logronobus.core.network.service.createDeparturesService
 import dev.adrc95.logronobus.core.network.service.createFaresService
 import dev.adrc95.logronobus.core.network.service.createFleetService
 import dev.adrc95.logronobus.core.network.service.createWalkingService
-import dev.adrc95.logronobus.core.preference.createDataStore
 import dev.adrc95.logronobus.core.preference.datasource.DataStorePreferencesDataSource
 import dev.adrc95.logronobus.core.preference.datasource.PreferencesDataSource
+import dev.adrc95.logronobus.core.testing.fake.FakePreferencesStore
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
@@ -67,7 +67,7 @@ import kotlinx.serialization.json.jsonPrimitive
 
 private val sharedLocalStore = InMemoryFavouritesDataSource()
 private val sharedPreferencesStore: PreferencesDataSource =
-    DataStorePreferencesDataSource(createDataStore())
+    DataStorePreferencesDataSource(FakePreferencesStore())
 
 class TestBus(
     injectedHttpClient: HttpClient? = null,

@@ -9,7 +9,7 @@ Puedes consultar los [principios generales de modularización](https://developer
 en la documentación oficial.
 
 El README de cada módulo incluye su grafo de dependencias. Estos grafos ayudan a entender cómo encaja
-el proyecto; aquí tienes como ejemplo el [grafo de `shared`](../shared/README.md).
+el proyecto; aquí tienes como ejemplo el [grafo de `:app:shared`](../app/shared/README.md).
 
 ## Tipos de módulo
 
@@ -40,17 +40,20 @@ graph TB
       :feature:nearby:navigation[navigation]:::navigation
     end
   end
-  :androidApp[androidApp]:::application
-  :desktopApp[desktopApp]:::jvm-library
-  :webApp[webApp]:::kmp-library
-  :shared[shared]:::library
+  subgraph :app
+    direction TB
+    :app:androidApp[androidApp]:::application
+    :app:desktopApp[desktopApp]:::jvm-library
+    :app:webApp[webApp]:::kmp-library
+    :app:shared[shared]:::library
+  end
 
-  :androidApp -.-> :shared
-  :desktopApp -.-> :shared
-  :webApp -.-> :shared
-  :shared -.-> :feature:nearby
-  :shared -.-> :feature:tracking
-  :shared -.-> :feature:favourites
+  :app:androidApp -.-> :app:shared
+  :app:desktopApp -.-> :app:shared
+  :app:webApp -.-> :app:shared
+  :app:shared -.-> :feature:nearby
+  :app:shared -.-> :feature:tracking
+  :app:shared -.-> :feature:favourites
   :feature:nearby --> :feature:nearby:navigation
   :feature:nearby -.-> :core:ui
   :feature:nearby -.-> :core:domain
@@ -97,15 +100,19 @@ El proyecto tiene estos tipos de módulo:
 
 ### Los módulos de aplicación
 
-`androidApp`, `desktopApp` y `webApp` son los puntos de entrada de cada plataforma. Cada uno contiene
-la configuración necesaria para iniciar y empaquetar la app: la actividad, el manifiesto y la firma
-en Android; la aplicación y el empaquetado de escritorio; o el punto de entrada web y la salida de
-webpack. Dependen de `shared` y de los módulos de `core` que necesitan. Ningún otro módulo depende de
-estas aplicaciones.
+`:app:androidApp`, `:app:desktopApp` y `:app:webApp` son los puntos de entrada de cada plataforma.
+Sus proyectos y el anfitrión de la interfaz compartida se agrupan en `app/`. Cada módulo de app
+contiene la configuración necesaria para iniciar y empaquetar la app: la actividad, el manifiesto y
+la firma en Android; la aplicación y el empaquetado de escritorio; o el punto de entrada web y la
+salida de webpack. Dependen de `:app:shared` y de los módulos de `core` que necesitan. Ningún otro
+módulo depende de estas aplicaciones.
 
-`shared` aloja la interfaz compartida. Monta el shell de la app, mantiene el estado de navegación
+`:app:shared` aloja la interfaz compartida. Monta el shell de la app, mantiene el estado de navegación
 principal y conecta las funcionalidades. Depende de todos los módulos de `core` y de todas las
 funcionalidades, por lo que es el único módulo que reúne la app completa.
+
+`app/iosApp` está agrupado con estos proyectos, pero sigue siendo un proyecto de Xcode, no un módulo
+Gradle. Enlaza el framework de iOS que produce `:app:shared`.
 
 ### Módulos de funcionalidad
 
@@ -145,8 +152,8 @@ módulos de `core`, nunca de una funcionalidad ni de una aplicación. Su orden e
 
 ### Módulos varios
 
-`iosApp` no es un módulo de Gradle: es el proyecto de Xcode que enlaza el framework estático que
-produce `shared` y arranca la interfaz de Compose.
+`app/iosApp` no es un módulo de Gradle: es el proyecto de Xcode que enlaza el framework estático que
+produce `:app:shared` y arranca la interfaz de Compose.
 
 ## Plugins de convención
 

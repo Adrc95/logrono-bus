@@ -34,7 +34,7 @@ fun versionName(): String {
 }
 
 dependencies {
-    implementation(projects.shared)
+    implementation(projects.app.shared)
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
     implementation(project.dependencies.platform(libs.koin.bom))

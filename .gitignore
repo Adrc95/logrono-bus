@@ -25,7 +25,7 @@ keystore.properties
 .hotswan/
 
 # R8 deobfuscation map: never share it, it undoes the obfuscation
-androidApp/mapping/
+app/androidApp/mapping/
 *.apk
 *.aab
 

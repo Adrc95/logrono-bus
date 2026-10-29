@@ -82,7 +82,7 @@ El proyecto se compila con el wrapper de Gradle incluido. Antes de empezar, inst
 - **JDK 17**: es la versión de Java que usan todos los módulos.
 - **Android Studio** y **Android SDK 37**: necesarios para Android y también para los targets de
   escritorio y web.
-- **Xcode**: necesario para compilar y ejecutar la app de iOS, ubicada en [`/iosApp`](./iosApp).
+- **Xcode**: necesario para compilar y ejecutar la app de iOS, ubicada en [`app/iosApp`](./app/iosApp).
 
 Abre la raíz del repositorio en el IDE y deja que importe el proyecto. Las versiones que importan
 están en [`gradle/libs.versions.toml`](./gradle/libs.versions.toml).
@@ -132,8 +132,10 @@ La [guía de arquitectura](docs/ArchitectureLearningJourney.es.md) explica cada 
 # Modularización
 
 Los módulos de Gradle se agrupan en tres tipos: bibliotecas `core`, funcionalidades y aplicaciones.
-Los plugins de convención mantienen coherentes la configuración de plugins, targets y dependencias.
-Cada módulo incluye su propio grafo de dependencias en el README.
+El anfitrión de la interfaz compartida y las aplicaciones de plataforma se agrupan en `app/`:
+`androidApp`, `webApp` y `desktopApp` son módulos Gradle, mientras que `iosApp` sigue siendo un
+proyecto nativo de Xcode. Los plugins de convención mantienen coherentes la configuración de plugins,
+targets y dependencias. Cada módulo incluye su propio grafo de dependencias en el README.
 
 Consulta la [guía de modularización](docs/ModularizationLearningJourney.es.md) para más detalles.
 
@@ -141,18 +143,19 @@ Consulta la [guía de modularización](docs/ModularizationLearningJourney.es.md)
 
 | Plataforma | Módulo | Cómo se ejecuta |
 |---|---|---|
-| Android | `:androidApp` | `./gradlew :androidApp:assembleDebug` deja el APK en `androidApp/build/outputs/apk/debug/` |
-| iOS | `/iosApp` | abre el proyecto en Xcode y ejecútalo desde ahí |
-| Escritorio | `:desktopApp` | `./gradlew :desktopApp:run` |
-| Web | `:webApp` | `./gradlew :webApp:wasmJsBrowserDistribution` deja el paquete en `webApp/build/dist/wasmJs/productionExecutable` |
+| Android | `:app:androidApp` | `./gradlew :app:androidApp:assembleDebug` deja el APK en `app/androidApp/build/outputs/apk/debug/` |
+| iOS | `app/iosApp` (proyecto Xcode) | abre el proyecto en Xcode y ejecútalo desde ahí |
+| Escritorio | `:app:desktopApp` | `./gradlew :app:desktopApp:run` |
+| Web | `:app:webApp` | `./gradlew :app:webApp:wasmJsBrowserDistribution` deja el paquete en `app/webApp/build/dist/wasmJs/productionExecutable` |
 
-La app de iOS es la única que no compila Gradle, porque necesita Xcode para enlazar el framework.
+El módulo `app/shared` tiene la ruta Gradle `:app:shared`. La app de iOS es la única que no compila
+Gradle, porque necesita Xcode para enlazar el framework de ese módulo.
 
 El `versionCode` y el `versionName` de Android salen de `-PversionNum` cuando lo pasas. Para una build
 de release, el keystore se lee de `keystore.properties`.
 
-`./gradlew :androidApp:assembleRelease` aplica R8 con `androidApp/proguard-rules.pro` y genera un
-`mapping.txt` en `androidApp/build/outputs/mapping/release/`. Guarda ese fichero: es la única forma de
+`./gradlew :app:androidApp:assembleRelease` aplica R8 con `app/androidApp/proguard-rules.pro` y genera un
+`mapping.txt` en `app/androidApp/build/outputs/mapping/release/`. Guarda ese fichero: es la única forma de
 leer un crash de release, y no debe publicarse nunca porque deshace la ofuscación. La variante debug
 lleva el sufijo `.debug` en el identificador, así que las dos se pueden instalar a la vez.
 
@@ -196,7 +199,7 @@ es sobre el estado que vería el usuario.
 | JVM, un módulo | `./gradlew :feature:tracking:jvmTest` |
 | Host de Android | `./gradlew testAndroidHostTest`, sólo `shared` |
 | Móvil Android | `./gradlew :core:database:connectedAndroidDeviceTest`, con el móvil conectado y depurando por USB |
-| Simulador de iOS | `./gradlew :shared:iosSimulatorArm64Test`, en un Mac con Apple Silicon |
+| Simulador de iOS | `./gradlew :app:shared:iosSimulatorArm64Test`, en un Mac con Apple Silicon |
 | Navegador | `./gradlew wasmJsBrowserTest`, con Karma |
 
 Para incluir los probes de JVM que consultan el servicio real, define `LIVE_API=1`:

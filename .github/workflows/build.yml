@@ -56,11 +56,11 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew :androidApp:assembleDebug --stacktrace
+      - run: ./gradlew :app:androidApp:assembleDebug --stacktrace
       - uses: actions/upload-artifact@v4
         with:
           name: android-debug-apk
-          path: androidApp/build/outputs/apk/debug/*.apk
+          path: app/androidApp/build/outputs/apk/debug/*.apk
 
   apple:
     name: iOS framework + desktop
@@ -81,13 +81,13 @@ jobs:
           key: ${{ runner.os }}-konan-${{ hashFiles('**/libs.versions.toml') }}
           restore-keys: |
             ${{ runner.os }}-konan-
-      - run: ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64 --stacktrace
-      - run: ./gradlew iosSimulatorArm64Test --stacktrace
-      - run: ./gradlew :desktopApp:assemble --stacktrace
+      - run: ./gradlew :app:shared:linkDebugFrameworkIosSimulatorArm64 --stacktrace
+      - run: ./gradlew :app:shared:iosSimulatorArm64Test --stacktrace
+      - run: ./gradlew :app:desktopApp:assemble --stacktrace
       - name: Build the iOS app
         run: >
           xcodebuild
-          -project iosApp/iosApp.xcodeproj
+          -project app/iosApp/iosApp.xcodeproj
           -target iosApp
           -configuration Debug
           -sdk iphonesimulator
@@ -112,8 +112,8 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew :webApp:wasmJsBrowserDistribution --stacktrace
+      - run: ./gradlew :app:webApp:wasmJsBrowserDistribution --stacktrace
       - uses: actions/upload-artifact@v4
         with:
           name: web-distribution
-          path: webApp/build/dist/**
+          path: app/webApp/build/dist/**

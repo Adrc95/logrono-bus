@@ -38,12 +38,12 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - run: ./gradlew :webApp:wasmJsBrowserDistribution --stacktrace
+      - run: ./gradlew :app:webApp:wasmJsBrowserDistribution --stacktrace
 
       # Pages runs Jekyll over the upload unless told not to, which would drop the files webpack
       # names with a leading underscore.
       - name: Disable Jekyll processing
-        run: touch webApp/build/dist/wasmJs/productionExecutable/.nojekyll
+        run: touch app/webApp/build/dist/wasmJs/productionExecutable/.nojekyll
 
       # Only works for a token that can administer the repository; here it answers
       # "Resource not accessible by integration", so the source is set in the repository settings.
@@ -53,7 +53,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: webApp/build/dist/wasmJs/productionExecutable
+          path: app/webApp/build/dist/wasmJs/productionExecutable
 
   deploy:
     name: Deploy to GitHub Pages

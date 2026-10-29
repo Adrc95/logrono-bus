@@ -1,4 +1,4 @@
-# `:desktopApp`
+# `:app:desktopApp`
 
 ## Module dependency graph
 
@@ -11,6 +11,11 @@ config:
     nodePlacementStrategy: SIMPLE
 ---
 graph TB
+  subgraph :app
+    direction TB
+    :app:desktopApp[desktopApp]:::jvm-library
+    :app:shared[shared]:::library
+  end
   subgraph :core
     direction TB
     :core:common[common]:::library
@@ -73,9 +78,28 @@ graph TB
       :feature:tracking:navigation[navigation]:::navigation
     end
   end
-  :desktopApp[desktopApp]:::jvm-library
-  :shared[shared]:::library
 
+  :app:desktopApp -.-> :app:shared
+  :app:shared -.-> :core:common
+  :app:shared -.-> :core:data
+  :app:shared -.-> :core:database
+  :app:shared -.-> :core:designsystem
+  :app:shared -.-> :core:device
+  :app:shared -.-> :core:domain
+  :app:shared -.-> :core:model
+  :app:shared -.-> :core:navigation
+  :app:shared -.-> :core:network
+  :app:shared -.-> :core:preference
+  :app:shared -.-> :core:ui
+  :app:shared -.-> :feature:buses
+  :app:shared -.-> :feature:fares
+  :app:shared -.-> :feature:favourites
+  :app:shared -.-> :feature:nearby
+  :app:shared -.-> :feature:routes
+  :app:shared -.-> :feature:scan
+  :app:shared -.-> :feature:settings
+  :app:shared -.-> :feature:stops
+  :app:shared -.-> :feature:tracking
   :core:data --> :core:common
   :core:data -.-> :core:database
   :core:data -.-> :core:device
@@ -98,7 +122,6 @@ graph TB
   :core:ui --> :core:designsystem
   :core:ui -.-> :core:domain
   :core:ui --> :core:model
-  :desktopApp -.-> :shared
   :feature:buses -.-> :core:common
   :feature:buses -.-> :core:designsystem
   :feature:buses -.-> :core:domain
@@ -174,26 +197,6 @@ graph TB
   :feature:tracking -.-> :core:navigation
   :feature:tracking -.-> :core:ui
   :feature:tracking --> :feature:tracking:navigation
-  :shared -.-> :core:common
-  :shared -.-> :core:data
-  :shared -.-> :core:database
-  :shared -.-> :core:designsystem
-  :shared -.-> :core:device
-  :shared -.-> :core:domain
-  :shared -.-> :core:model
-  :shared -.-> :core:navigation
-  :shared -.-> :core:network
-  :shared -.-> :core:preference
-  :shared -.-> :core:ui
-  :shared -.-> :feature:buses
-  :shared -.-> :feature:fares
-  :shared -.-> :feature:favourites
-  :shared -.-> :feature:nearby
-  :shared -.-> :feature:routes
-  :shared -.-> :feature:scan
-  :shared -.-> :feature:settings
-  :shared -.-> :feature:stops
-  :shared -.-> :feature:tracking
 
 classDef feature fill:#CAFFBF,stroke:#000,stroke-width:2px,color:#000;
 classDef navigation fill:#9BF6FF,stroke:#000,stroke-width:2px,color:#000;

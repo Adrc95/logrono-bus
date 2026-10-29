@@ -21,7 +21,7 @@ kotlin {
 
     sourceSets {
         wasmJsMain.dependencies {
-            implementation(projects.shared)
+            implementation(projects.app.shared)
             implementation(libs.compose.ui)
             implementation(libs.kotlinx.browser)
         }
