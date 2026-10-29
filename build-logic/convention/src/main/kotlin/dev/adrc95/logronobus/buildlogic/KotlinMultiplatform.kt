@@ -32,5 +32,18 @@ internal fun Project.configureKotlinMultiplatform() {
         android.compilerOptions {
             jvmTarget = JvmTarget.JVM_17
         }
+        android.withHostTest {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
+        // Room's bundled SQLite ships a JNI library that an Android host unit test cannot load, so
+        // the tests that open a real database live in nonAndroidTest and run off the host. The
+        // device test is wired by the module, because withDeviceTest runs after this plugin.
+        val nonAndroidTest = sourceSets.create("nonAndroidTest") {
+            dependsOn(sourceSets.getByName("commonTest"))
+        }
+        listOf("iosTest", "jvmTest", "wasmJsTest").forEach { name ->
+            sourceSets.findByName(name)?.dependsOn(nonAndroidTest)
+        }
     }
 }

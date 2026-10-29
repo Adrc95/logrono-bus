@@ -28,7 +28,7 @@ jobs:
       - run: ./gradlew spotlessCheck --stacktrace
 
   jvm:
-    name: Unit tests (JVM)
+    name: Unit tests (JVM, Android)
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -38,7 +38,8 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v5
-      - run: ./gradlew jvmTest --stacktrace
+      # The desktop and Android host targets run the same commonTest sources.
+      - run: ./gradlew jvmTest testAndroidHostTest --stacktrace
       - uses: actions/upload-artifact@v7
         if: failure()
         with:

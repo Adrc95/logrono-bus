@@ -79,7 +79,7 @@ kotlin {
         }
 
         getByName("androidDeviceTest") {
-            dependsOn(commonTest.get())
+            dependsOn(getByName("nonAndroidTest"))
             dependencies {
                 implementation(libs.kotlin.test)
                 implementation(libs.androidx.testRunner)
