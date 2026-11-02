@@ -18,7 +18,7 @@ package dev.adrc95.logronobus
 
 import android.app.Application
 import dev.adrc95.logronobus.di.initKoin
-import dev.adrc95.logronobus.ui.App
+import dev.adrc95.logronobus.shortcuts.publishAppShortcuts
 import org.koin.android.ext.koin.androidContext
 
 class LogronoBusApplication : Application() {
@@ -27,5 +27,6 @@ class LogronoBusApplication : Application() {
         initKoin {
             androidContext(this@LogronoBusApplication)
         }
+        publishAppShortcuts(this)
     }
 }

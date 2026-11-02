@@ -15,4 +15,12 @@
 -->
 <resources>
     <string name="app_name">Logroño Bus</string>
+    <string name="shortcut_routes_short">Líneas</string>
+    <string name="shortcut_routes_long">Ver todas las líneas</string>
+    <string name="shortcut_nearby_short">Cerca</string>
+    <string name="shortcut_nearby_long">Paradas cerca de mí</string>
+    <string name="shortcut_scan_short">Escanear</string>
+    <string name="shortcut_scan_long">Escanear una parada</string>
+    <string name="shortcut_favourites_short">Paradas</string>
+    <string name="shortcut_favourites_long">Mis paradas favoritas</string>
 </resources>

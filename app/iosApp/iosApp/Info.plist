@@ -6,5 +6,73 @@
 	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>dev.adrc95.logronobus</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>logronobus</string>
+			</array>
+		</dict>
+	</array>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>dev.adrc95.logronobus.shortcut.routes</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Líneas</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>ShortcutRoutes</string>
+			<key>UIApplicationShortcutItemUserInfo</key>
+			<dict>
+				<key>url</key>
+				<string>logronobus://routes</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>dev.adrc95.logronobus.shortcut.nearby</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Cerca de mí</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>ShortcutNearby</string>
+			<key>UIApplicationShortcutItemUserInfo</key>
+			<dict>
+				<key>url</key>
+				<string>logronobus://nearby</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>dev.adrc95.logronobus.shortcut.scan</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Escanear</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>ShortcutScan</string>
+			<key>UIApplicationShortcutItemUserInfo</key>
+			<dict>
+				<key>url</key>
+				<string>logronobus://scan</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>dev.adrc95.logronobus.shortcut.favourites</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Paradas</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>ShortcutFavourites</string>
+			<key>UIApplicationShortcutItemUserInfo</key>
+			<dict>
+				<key>url</key>
+				<string>logronobus://favourites</string>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
