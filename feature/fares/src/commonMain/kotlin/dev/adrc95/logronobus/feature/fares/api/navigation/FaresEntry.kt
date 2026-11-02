@@ -19,9 +19,15 @@ package dev.adrc95.logronobus.feature.fares.api.navigation
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
+import dev.adrc95.logronobus.feature.fares.FareConstants
 import dev.adrc95.logronobus.feature.fares.FaresRoute
 
-fun EntryProviderScope<NavKey>.faresEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.faresEntry(
+    navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
+) {
+    deepLinks.register(FareConstants.DEEP_LINK, FaresNavKey.serializer())
     entry<FaresNavKey> {
         FaresRoute(onBack = navigator::goBack)
     }

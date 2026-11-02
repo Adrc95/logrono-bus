@@ -30,6 +30,7 @@ import dev.adrc95.logronobus.core.domain.usecase.SaveLastViewedRouteUseCase
 import dev.adrc95.logronobus.core.domain.usecase.StartTrackingUseCase
 import dev.adrc95.logronobus.core.domain.usecase.ToggleFavouriteUseCase
 import dev.adrc95.logronobus.core.domain.usecase.UpdateTrackedTripUseCase
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkStore
 import dev.adrc95.logronobus.core.testing.TestBus
 import dev.adrc95.logronobus.core.testing.failingBackend
 import dev.adrc95.logronobus.core.testing.nonsenseBackend
@@ -91,6 +92,7 @@ class RoutesBackendFailureIntegrationTest {
             GetTrackedTripUseCase(trackedTrip),
             UpdateTrackedTripUseCase(trackedTrip),
             StartTrackingUseCase(trackedTrip, SaveLastViewedRouteUseCase(bus.lastViewedRoute)),
+            DeepLinkStore(),
         )
     }
 

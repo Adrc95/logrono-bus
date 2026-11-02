@@ -46,6 +46,8 @@ import dev.adrc95.logronobus.core.model.RouteDetail
 import dev.adrc95.logronobus.core.model.Stop
 import dev.adrc95.logronobus.core.model.StopDepartures
 import dev.adrc95.logronobus.core.model.TrackedTrip
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkMatch
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkStore
 import dev.adrc95.logronobus.core.ui.mapper.toDisplayModel
 import dev.adrc95.logronobus.core.ui.mapper.toDisplayModels
 import dev.adrc95.logronobus.core.ui.mapper.toEtaDisplayModels
@@ -62,6 +64,7 @@ import dev.adrc95.logronobus.core.ui.util.launchSafely
 import dev.adrc95.logronobus.core.ui.util.safeCall
 import dev.adrc95.logronobus.core.ui.util.stateInViewModel
 import dev.adrc95.logronobus.core.ui.util.titleCased
+import dev.adrc95.logronobus.feature.routes.api.navigation.RoutesNavKey
 import dev.adrc95.logronobus.feature.routes.mapper.toDisplayModels
 import dev.adrc95.logronobus.feature.routes.mapper.toRouteStopsDisplayModel
 import dev.adrc95.logronobus.feature.routes.model.RouteDisplayModel
@@ -84,6 +87,7 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import org.koin.core.annotation.KoinViewModel
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Instant
 
 @KoinViewModel
@@ -101,6 +105,7 @@ class RoutesViewModel(
     private val getTrackedTrip: GetTrackedTripUseCase,
     private val updateTrackedTrip: UpdateTrackedTripUseCase,
     private val startTracking: StartTrackingUseCase,
+    private val deepLinkStore: DeepLinkStore,
     private val getStopRoles: GetStopRolesUseCase = GetStopRolesUseCase(),
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
@@ -119,6 +124,7 @@ class RoutesViewModel(
     private var trackedTripId: String? = null
     private var isLoadingPositions = false
     private var isRefreshing = false
+    private var skipLastViewedRoute = false
 
     private val routes: StateFlow<List<Route>> =
         flow {
@@ -197,8 +203,29 @@ class RoutesViewModel(
     private val lastViewedRouteLoader: StateFlow<String?> =
         flow {
             emit(safeCall<String?>(null) { getLastViewedRoute() })
-        }.onEach { routeNum -> if (routeNum.isNotNull()) selectRoute(routeNum) }
-            .stateInViewModel(this, null)
+        }.onEach { routeNum ->
+            if (skipLastViewedRoute) return@onEach
+            // A link the user opened on purpose outranks the line left open last time.
+            if (routeNum.isNotNull() && _uiState.value.selectedRouteNum == null) selectRoute(routeNum)
+        }.stateInViewModel(this, null)
+
+    private val deepLinkLoader: StateFlow<DeepLinkMatch?> =
+        deepLinkStore.pendingMatch
+            .onEach { match ->
+                if (match?.key != RoutesNavKey) return@onEach
+                val line =
+                    match.arguments[RoutesConstants.LINE_PARAM]
+                        ?.firstOrNull()
+                        ?.takeIf { it.isNotBlank() }
+                if (line == null) {
+                    // A link to the list asks for the list, not for the line left open last time.
+                    skipLastViewedRoute = true
+                    showRouteList()
+                } else {
+                    selectRoute(line)
+                }
+                deepLinkStore.clearPendingMatch()
+            }.stateInViewModel(this, null)
 
     private val autoRefresh: StateFlow<Long> =
         flow {
@@ -207,16 +234,18 @@ class RoutesViewModel(
                 if (routeNum.isNotNull()) {
                     val following = tracked.value?.tripId != null
                     delay(
-                        if (following) {
-                            RoutesConstants.TRACKING_REFRESH_INTERVAL_MILLIS
-                        } else {
-                            REFRESH_INTERVAL_MILLIS
-                        },
+                        (
+                            if (following) {
+                                RoutesConstants.TRACKING_REFRESH_INTERVAL_MILLIS
+                            } else {
+                                REFRESH_INTERVAL_MILLIS
+                            }
+                        ).milliseconds,
                     )
                     refreshRoutePositions(routeNum, force = following)
                     emit(nowEpochMilliseconds())
                 } else {
-                    delay(NOW_TICK_MILLIS)
+                    delay(NOW_TICK_MILLIS.milliseconds)
                 }
             }
         }.stateInViewModel(this, 0L)
@@ -229,6 +258,7 @@ class RoutesViewModel(
             busShapeLoader.map { },
             trackedRouteLoader.map { },
             lastViewedRouteLoader.map { },
+            deepLinkLoader.map { },
             autoRefresh.map { },
         )
 
@@ -255,6 +285,11 @@ class RoutesViewModel(
     }
 
     fun clearRoute() {
+        showRouteList()
+        launchSafely { safeCall(Unit) { saveLastViewedRoute(null) } }
+    }
+
+    private fun showRouteList() {
         _uiState.update {
             it.copy(
                 selectedRouteNum = null,
@@ -262,7 +297,6 @@ class RoutesViewModel(
             )
         }
         selectedStopRef = null
-        launchSafely { safeCall(Unit) { saveLastViewedRoute(null) } }
     }
 
     fun selectDirection(index: Int) {
@@ -513,7 +547,7 @@ class RoutesViewModel(
         isRefreshing = false
     }
 
-    private suspend fun refreshTrackedDeparture(fetched: List<BusLocation>) {
+    private fun refreshTrackedDeparture(fetched: List<BusLocation>) {
         val trackedTrip = tracked.value ?: return
         val row = trackedTrip.departure ?: return
         val bus =

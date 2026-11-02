@@ -16,15 +16,16 @@
 
 package dev.adrc95.logronobus
 
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import dev.adrc95.logronobus.di.initKoin
+import dev.adrc95.logronobus.navigation.submitWebDeepLink
 import dev.adrc95.logronobus.ui.App
 import kotlinx.browser.document
+import kotlinx.browser.window
 
-@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     initKoin()
+    submitWebDeepLink(window.location.hash)
     ComposeViewport(document.body!!) {
         App()
     }

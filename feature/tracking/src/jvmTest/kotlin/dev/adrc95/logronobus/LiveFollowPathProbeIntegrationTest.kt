@@ -35,6 +35,7 @@ import dev.adrc95.logronobus.core.domain.usecase.SaveLastViewedRouteUseCase
 import dev.adrc95.logronobus.core.domain.usecase.StartTrackingUseCase
 import dev.adrc95.logronobus.core.domain.usecase.ToggleFavouriteUseCase
 import dev.adrc95.logronobus.core.domain.usecase.UpdateTrackedTripUseCase
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkStore
 import dev.adrc95.logronobus.core.testing.TestBus
 import dev.adrc95.logronobus.feature.routes.RoutesViewModel
 import dev.adrc95.logronobus.feature.tracking.TrackingViewModel
@@ -82,6 +83,7 @@ class LiveFollowPathProbeIntegrationTest {
                     GetTrackedTripUseCase(trackedTrip),
                     UpdateTrackedTripUseCase(trackedTrip),
                     StartTrackingUseCase(trackedTrip, SaveLastViewedRouteUseCase(repository.lastViewedRoute)),
+                    DeepLinkStore(),
                 )
             val now = Instant.fromEpochMilliseconds(nowEpochMilliseconds())
             for (stopRef in listOf("88", "157")) {

@@ -16,6 +16,8 @@
 
 package dev.adrc95.logronobus.feature.scan
 
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinks
+
 object ScanConstants {
     internal const val INSET = 0.12f
     internal const val COLOUR_PERCENTILE = 80
@@ -28,4 +30,5 @@ object ScanConstants {
     internal const val MIN_INK = 8
     internal const val LOG_EVERY_FRAMES = 30
     internal const val PIXEL_FORMAT_KEY = "PixelFormatType"
+    const val DEEP_LINK: String = "${DeepLinks.BASE_URI}scan"
 }

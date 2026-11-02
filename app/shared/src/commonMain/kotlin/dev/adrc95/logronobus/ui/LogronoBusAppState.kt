@@ -27,12 +27,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import dev.adrc95.logronobus.core.designsystem.theme.TopBarHostState
 import dev.adrc95.logronobus.core.navigation.NavigationState
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkStore
 import dev.adrc95.logronobus.core.navigation.rememberNavigationState
 import dev.adrc95.logronobus.feature.favourites.api.navigation.FavouritesNavKey
 import dev.adrc95.logronobus.navigation.TopTab
 import dev.adrc95.logronobus.navigation.appNavConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 @Stable
 class LogronoBusAppState(
@@ -41,6 +44,8 @@ class LogronoBusAppState(
     val snackbarHostState: SnackbarHostState,
     val snackbarScope: CoroutineScope,
     val topBarHost: TopBarHostState,
+    val deepLinks: DeepLinkRegistry,
+    private val deepLinkStore: DeepLinkStore,
 ) {
     val currentTab: TopTab? by derivedStateOf {
         TopTab.entries.firstOrNull { it.key == navigationState.currentKey }
@@ -52,6 +57,16 @@ class LogronoBusAppState(
             snackbarHostState.showSnackbar(message, duration = SnackbarDuration.Short)
         }
     }
+
+    suspend fun handleDeepLinks() {
+        deepLinkStore.pending.collect { uri ->
+            if (uri == null) return@collect
+            val match = deepLinks.resolve(uri)
+            navigator.goToTopLevel(match?.key ?: navigationState.startKey)
+            deepLinkStore.setPendingMatch(match)
+            deepLinkStore.clear()
+        }
+    }
 }
 
 @Composable
@@ -61,12 +76,16 @@ fun rememberLogronoBusAppState(): LogronoBusAppState {
     val snackbarHostState = remember { SnackbarHostState() }
     val snackbarScope = rememberCoroutineScope()
     val topBarHost = remember { TopBarHostState() }
+    val deepLinks = remember { DeepLinkRegistry() }
+    val deepLinkStore = koinInject<DeepLinkStore>()
     return remember(
         navigationState,
         navigator,
         snackbarHostState,
         snackbarScope,
         topBarHost,
+        deepLinks,
+        deepLinkStore,
     ) {
         LogronoBusAppState(
             navigationState = navigationState,
@@ -74,6 +93,8 @@ fun rememberLogronoBusAppState(): LogronoBusAppState {
             snackbarHostState = snackbarHostState,
             snackbarScope = snackbarScope,
             topBarHost = topBarHost,
+            deepLinks = deepLinks,
+            deepLinkStore = deepLinkStore,
         )
     }
 }

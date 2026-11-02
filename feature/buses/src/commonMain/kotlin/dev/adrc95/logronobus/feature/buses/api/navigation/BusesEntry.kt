@@ -19,11 +19,17 @@ package dev.adrc95.logronobus.feature.buses.api.navigation
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
 import dev.adrc95.logronobus.feature.buses.AllBusesRoute
+import dev.adrc95.logronobus.feature.buses.BusesConstants
 import dev.adrc95.logronobus.feature.fares.api.navigation.FaresNavKey
 import dev.adrc95.logronobus.feature.stops.api.navigation.StopSheetNavKey
 
-fun EntryProviderScope<NavKey>.busesEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.busesEntry(
+    navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
+) {
+    deepLinks.register(BusesConstants.DEEP_LINK, BusesNavKey.serializer())
     entry<BusesNavKey> {
         AllBusesRoute(
             onStopClick = { navigator.navigate(StopSheetNavKey(it.stopRef)) },

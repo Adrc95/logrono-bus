@@ -20,13 +20,19 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import dev.adrc95.logronobus.core.navigation.Navigator
 import dev.adrc95.logronobus.core.navigation.SheetSceneStrategy
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
+import dev.adrc95.logronobus.feature.stops.StopsConstants
 import dev.adrc95.logronobus.feature.stops.StopsSheetRoute
 import dev.adrc95.logronobus.feature.stops.StopsSheetViewModel
 import dev.adrc95.logronobus.feature.tracking.api.navigation.TrackingNavKey
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
-fun EntryProviderScope<NavKey>.stopsSheetEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.stopsSheetEntry(
+    navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
+) {
+    deepLinks.register(StopsConstants.DEEP_LINK, StopSheetNavKey.serializer())
     entry<StopSheetNavKey>(metadata = SheetSceneStrategy.sheet()) { key ->
         val viewModel = koinViewModel<StopsSheetViewModel> { parametersOf(key) }
         StopsSheetRoute(

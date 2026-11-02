@@ -34,6 +34,8 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteItemCo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import dev.adrc95.logronobus.core.designsystem.theme.LocalTopBarHost
 import dev.adrc95.logronobus.core.designsystem.theme.logronoNavigationBarContainerColor
@@ -52,8 +54,20 @@ fun App() {
     val appState = rememberLogronoBusAppState()
     val navigator = appState.navigator
     val currentTab = appState.currentTab
+    val entryProvider =
+        remember(navigator, appState) {
+            logronoBusEntries(
+                navigator,
+                appState.deepLinks,
+                appState::showMessage,
+            )
+        }
 
     LogronoBusAppTheme {
+        LaunchedEffect(appState) {
+            appState.handleDeepLinks()
+        }
+
         CompositionLocalProvider(LocalTopBarHost provides appState.topBarHost) {
             val suiteItemColors =
                 NavigationSuiteItemColors(
@@ -121,7 +135,7 @@ fun App() {
                                 .windowInsetsPadding(
                                     WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
                                 ),
-                        entryProvider = logronoBusEntries(navigator, appState::showMessage),
+                        entryProvider = entryProvider,
                     )
                 }
             }

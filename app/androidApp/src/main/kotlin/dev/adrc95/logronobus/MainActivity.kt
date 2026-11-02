@@ -17,6 +17,7 @@
 package dev.adrc95.logronobus
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.os.Build
@@ -27,6 +28,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import dev.adrc95.logronobus.navigation.submitDeepLink
 import dev.adrc95.logronobus.ui.App
 
 class MainActivity : ComponentActivity() {
@@ -43,9 +45,16 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             window.isNavigationBarContrastEnforced = false
         }
+        submitDeepLink(intent?.dataString)
         setContent {
             App()
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        submitDeepLink(intent.dataString)
     }
 }
 

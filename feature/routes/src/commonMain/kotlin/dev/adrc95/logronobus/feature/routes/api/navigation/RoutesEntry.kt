@@ -19,6 +19,8 @@ package dev.adrc95.logronobus.feature.routes.api.navigation
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
+import dev.adrc95.logronobus.feature.routes.RoutesConstants
 import dev.adrc95.logronobus.feature.routes.RoutesRoute
 import dev.adrc95.logronobus.feature.routes.RoutesViewModel
 import dev.adrc95.logronobus.feature.settings.api.navigation.SettingsNavKey
@@ -26,7 +28,11 @@ import dev.adrc95.logronobus.feature.stops.api.navigation.StopSheetNavKey
 import dev.adrc95.logronobus.feature.tracking.api.navigation.TrackingNavKey
 import org.koin.compose.viewmodel.koinViewModel
 
-fun EntryProviderScope<NavKey>.routesEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.routesEntry(
+    navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
+) {
+    deepLinks.register(RoutesConstants.DEEP_LINK, RoutesNavKey.serializer())
     entry<RoutesNavKey> {
         val viewModel = koinViewModel<RoutesViewModel>()
         RoutesRoute(

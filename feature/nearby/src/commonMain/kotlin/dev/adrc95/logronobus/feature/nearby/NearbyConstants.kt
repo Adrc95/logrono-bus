@@ -17,10 +17,11 @@
 package dev.adrc95.logronobus.feature.nearby
 
 import dev.adrc95.logronobus.core.model.GeoPoint
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinks
 
 object NearbyConstants {
     const val STOP_LIMIT = 20
     const val WALK_LIMIT = 12
-
     val LOGRONO_CENTRE = GeoPoint(42.4655, -2.4443)
+    const val DEEP_LINK: String = "${DeepLinks.BASE_URI}nearby"
 }

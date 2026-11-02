@@ -20,6 +20,8 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import dev.adrc95.logronobus.core.common.InputAction
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
+import dev.adrc95.logronobus.feature.favourites.FavouritesConstants
 import dev.adrc95.logronobus.feature.favourites.FavouritesRoute
 import dev.adrc95.logronobus.feature.favourites.FavouritesViewModel
 import dev.adrc95.logronobus.feature.routes.api.navigation.RoutesNavKey
@@ -29,8 +31,10 @@ import org.koin.compose.viewmodel.koinViewModel
 
 fun EntryProviderScope<NavKey>.favouritesEntry(
     navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
     onShowMessage: InputAction<String>,
 ) {
+    deepLinks.register(FavouritesConstants.DEEP_LINK, FavouritesNavKey.serializer())
     entry<FavouritesNavKey> {
         val viewModel = koinViewModel<FavouritesViewModel>()
         FavouritesRoute(

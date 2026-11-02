@@ -16,6 +16,14 @@
 
 package dev.adrc95.logronobus.feature.stops
 
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinks
+
 object StopsConstants {
     const val STOP_LOOKUP_RETRY_MILLIS = 500L
+    private const val LINE_PARAM: String = "line"
+    private const val DIRECTION_PARAM: String = "direction"
+    const val DEEP_LINK: String =
+        "${DeepLinks.BASE_URI}stops/{stopRef}" +
+            "?${LINE_PARAM}={lineFilter}" +
+            "&${DIRECTION_PARAM}={directionFilter}"
 }

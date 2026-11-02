@@ -16,6 +16,9 @@
 
 package dev.adrc95.logronobus.feature.fares
 
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinks
+
 object FareConstants {
     const val ALL_MUNICIPALITIES_ID = ""
+    const val DEEP_LINK: String = "${DeepLinks.BASE_URI}fares"
 }

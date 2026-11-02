@@ -16,9 +16,12 @@
 
 package dev.adrc95.logronobus.feature.routes
 
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinks
+
 object RoutesConstants {
     const val TRACKING_REFRESH_INTERVAL_MILLIS = 10_000L
-    const val MOVEMENT_CONFIRMATIONS = 2
     const val MAX_NEXT_STOP_LEAD_MINUTES = 30L
     const val MAX_TERMINUS_WAIT_MINUTES = 60L
+    const val LINE_PARAM: String = "line"
+    const val DEEP_LINK: String = "${DeepLinks.BASE_URI}routes?$LINE_PARAM={$LINE_PARAM}"
 }

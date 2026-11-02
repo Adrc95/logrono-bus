@@ -19,10 +19,11 @@ package dev.adrc95.logronobus
 import androidx.compose.ui.window.ComposeUIViewController
 import dev.adrc95.logronobus.di.initKoin
 import dev.adrc95.logronobus.ui.App
+import platform.UIKit.UIViewController
 
-fun MainViewController() =
-    ComposeUIViewController(
-        configure = { initKoin() },
-    ) {
+fun MainViewController(): UIViewController {
+    initKoin()
+    return ComposeUIViewController {
         App()
     }
+}

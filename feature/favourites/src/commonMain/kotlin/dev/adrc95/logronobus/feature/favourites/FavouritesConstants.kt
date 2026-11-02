@@ -16,6 +16,9 @@
 
 package dev.adrc95.logronobus.feature.favourites
 
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinks
+
 object FavouritesConstants {
     const val STALE_AFTER_MILLIS = 120_000L
+    const val DEEP_LINK: String = "${DeepLinks.BASE_URI}favourites"
 }

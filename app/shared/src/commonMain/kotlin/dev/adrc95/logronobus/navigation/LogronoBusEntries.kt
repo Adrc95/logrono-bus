@@ -21,6 +21,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import dev.adrc95.logronobus.core.common.InputAction
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
 import dev.adrc95.logronobus.feature.buses.api.navigation.busesEntry
 import dev.adrc95.logronobus.feature.fares.api.navigation.faresEntry
 import dev.adrc95.logronobus.feature.favourites.api.navigation.favouritesEntry
@@ -33,19 +34,45 @@ import dev.adrc95.logronobus.feature.tracking.api.navigation.trackingEntry
 
 fun logronoBusEntries(
     navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
     onShowMessage: InputAction<String>,
 ): (NavKey) -> NavEntry<NavKey> =
     entryProvider {
         favouritesEntry(
             navigator = navigator,
+            deepLinks = deepLinks,
             onShowMessage = onShowMessage,
         )
-        nearbyEntry(navigator = navigator)
-        scanEntry(navigator = navigator)
-        busesEntry(navigator = navigator)
-        faresEntry(navigator = navigator)
-        routesEntry(navigator = navigator)
-        stopsSheetEntry(navigator = navigator)
-        trackingEntry(navigator = navigator)
-        settingsEntry(navigator = navigator)
+        nearbyEntry(
+            navigator = navigator,
+            deepLinks = deepLinks,
+        )
+        scanEntry(
+            navigator = navigator,
+            deepLinks = deepLinks,
+        )
+        busesEntry(
+            navigator = navigator,
+            deepLinks = deepLinks,
+        )
+        faresEntry(
+            navigator = navigator,
+            deepLinks = deepLinks,
+        )
+        routesEntry(
+            navigator = navigator,
+            deepLinks = deepLinks,
+        )
+        stopsSheetEntry(
+            navigator = navigator,
+            deepLinks = deepLinks,
+        )
+        trackingEntry(
+            navigator = navigator,
+            deepLinks = deepLinks,
+        )
+        settingsEntry(
+            navigator = navigator,
+            deepLinks = deepLinks,
+        )
     }

@@ -19,9 +19,15 @@ package dev.adrc95.logronobus.feature.tracking.api.navigation
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
+import dev.adrc95.logronobus.feature.tracking.TrackingConstants
 import dev.adrc95.logronobus.feature.tracking.TrackingRoute
 
-fun EntryProviderScope<NavKey>.trackingEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.trackingEntry(
+    navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
+) {
+    deepLinks.register(TrackingConstants.DEEP_LINK, TrackingNavKey.serializer())
     entry<TrackingNavKey> {
         TrackingRoute(onBack = navigator::goBack)
     }

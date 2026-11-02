@@ -19,10 +19,16 @@ package dev.adrc95.logronobus.feature.settings.api.navigation
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
+import dev.adrc95.logronobus.feature.settings.SettingsConstants
 import dev.adrc95.logronobus.feature.settings.SettingsRoute
 import dev.adrc95.logronobus.feature.settings.SettingsViewModel
 
-fun EntryProviderScope<NavKey>.settingsEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.settingsEntry(
+    navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
+) {
+    deepLinks.register(SettingsConstants.DEEP_LINK, SettingsNavKey.serializer())
     entry<SettingsNavKey> {
         SettingsRoute(
             onBack = navigator::goBack,

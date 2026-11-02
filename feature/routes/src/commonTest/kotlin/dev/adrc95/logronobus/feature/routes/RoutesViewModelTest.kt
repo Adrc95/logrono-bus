@@ -18,10 +18,8 @@ package dev.adrc95.logronobus.feature.routes
 
 import app.cash.turbine.test
 import dev.adrc95.logronobus.core.domain.repository.CatalogueRepository
-import dev.adrc95.logronobus.core.domain.repository.DeparturesRepository
 import dev.adrc95.logronobus.core.domain.repository.FavouritesRepository
 import dev.adrc95.logronobus.core.domain.repository.LastViewedRouteRepository
-import dev.adrc95.logronobus.core.domain.repository.TrackedTripRepository
 import dev.adrc95.logronobus.core.domain.repository.VehiclesRepository
 import dev.adrc95.logronobus.core.domain.usecase.GetFavouriteStopsUseCase
 import dev.adrc95.logronobus.core.domain.usecase.GetLastViewedRouteUseCase
@@ -36,16 +34,10 @@ import dev.adrc95.logronobus.core.domain.usecase.SaveLastViewedRouteUseCase
 import dev.adrc95.logronobus.core.domain.usecase.StartTrackingUseCase
 import dev.adrc95.logronobus.core.domain.usecase.ToggleFavouriteUseCase
 import dev.adrc95.logronobus.core.domain.usecase.UpdateTrackedTripUseCase
-import dev.adrc95.logronobus.core.model.Arrival
-import dev.adrc95.logronobus.core.model.BusPositions
-import dev.adrc95.logronobus.core.model.DepartureTime
-import dev.adrc95.logronobus.core.model.FavouriteStop
-import dev.adrc95.logronobus.core.model.GeoPoint
-import dev.adrc95.logronobus.core.model.Route
 import dev.adrc95.logronobus.core.model.RouteDetail
 import dev.adrc95.logronobus.core.model.Stop
-import dev.adrc95.logronobus.core.model.StopDepartures
-import dev.adrc95.logronobus.core.model.TrackedTrip
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkMatch
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkStore
 import dev.adrc95.logronobus.core.testing.MainDispatcherRule
 import dev.adrc95.logronobus.core.testing.builder.busLocation
 import dev.adrc95.logronobus.core.testing.builder.busPositions
@@ -57,11 +49,10 @@ import dev.adrc95.logronobus.core.testing.fake.FakeFavouritesRepository
 import dev.adrc95.logronobus.core.testing.fake.FakeLastViewedRouteRepository
 import dev.adrc95.logronobus.core.testing.fake.FakeTrackedTripRepository
 import dev.adrc95.logronobus.core.testing.fake.FakeVehiclesRepository
-import dev.adrc95.logronobus.feature.routes.RoutesViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import dev.adrc95.logronobus.feature.routes.api.navigation.RoutesNavKey
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -70,7 +61,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlin.time.Instant
 
 private const val ROUTE = "6"
 
@@ -154,7 +144,6 @@ private val routePositions =
         )
     }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class RoutesViewModelTest {
     private val mainDispatcherRule = MainDispatcherRule()
 
@@ -169,10 +158,15 @@ class RoutesViewModelTest {
     }
 
     private fun createViewModel(
-        catalogue: CatalogueRepository = FakeCatalogueRepository(routes = routes, detail = routeDetail),
+        catalogue: CatalogueRepository =
+            FakeCatalogueRepository(
+                routes = routes,
+                detail = routeDetail,
+            ),
         vehicles: VehiclesRepository = FakeVehiclesRepository(),
         favourites: FavouritesRepository = FakeFavouritesRepository(),
         lastViewedRoute: LastViewedRouteRepository = FakeLastViewedRouteRepository(),
+        deepLinkStore: DeepLinkStore = DeepLinkStore(),
     ): RoutesViewModel {
         val departures = FakeDeparturesRepository()
         val trackedTrips = FakeTrackedTripRepository()
@@ -191,6 +185,7 @@ class RoutesViewModelTest {
             getTrackedTrip = GetTrackedTripUseCase(trackedTrips),
             updateTrackedTrip = UpdateTrackedTripUseCase(trackedTrips),
             startTracking = StartTrackingUseCase(trackedTrips, saveLastViewedRoute),
+            deepLinkStore = deepLinkStore,
         )
     }
 
@@ -307,6 +302,103 @@ class RoutesViewModelTest {
                 cancelAndIgnoreRemainingEvents()
             }
         }
+
+    @Test
+    fun `given a deep link line when the screen opens then that line is selected and the line is consumed`() =
+        runTest(mainDispatcherRule.scheduler) {
+            // Given
+            val deepLinkStore = DeepLinkStore()
+            deepLinkStore.setPendingMatch(
+                DeepLinkMatch(
+                    key = RoutesNavKey,
+                    arguments = mapOf(RoutesConstants.LINE_PARAM to listOf("4")),
+                ),
+            )
+
+            // When
+            val viewModel = createViewModel(deepLinkStore = deepLinkStore)
+
+            // Then
+            viewModel.uiState.test {
+                var state = awaitItem()
+                while (state.selectedRouteNum != "4") {
+                    state = awaitItem()
+                }
+
+                assertEquals("4", state.selectedRouteNum)
+                assertNull(deepLinkStore.pendingMatch.value)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `given a last viewed line and a deep link when the screen opens then the link wins`() =
+        runTest(mainDispatcherRule.scheduler) {
+            // Given
+            val deepLinkStore = DeepLinkStore()
+            deepLinkStore.setPendingMatch(
+                DeepLinkMatch(
+                    key = RoutesNavKey,
+                    arguments = mapOf(RoutesConstants.LINE_PARAM to listOf("4")),
+                ),
+            )
+
+            // When
+            val viewModel =
+                createViewModel(
+                    lastViewedRoute = FakeLastViewedRouteRepository(ROUTE),
+                    deepLinkStore = deepLinkStore,
+                )
+
+            // Then
+            viewModel.uiState.test {
+                var state = awaitItem()
+                while (state.selectedRouteNum != "4") {
+                    state = awaitItem()
+                }
+
+                assertEquals("4", state.selectedRouteNum)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `given a deep link to the list and a last viewed line when the screen opens then the list is shown`() =
+        runTest(mainDispatcherRule.scheduler) {
+            // Given
+            val deepLinkStore = DeepLinkStore()
+            deepLinkStore.setPendingMatch(DeepLinkMatch(key = RoutesNavKey, arguments = emptyMap()))
+
+            // When
+            val viewModel =
+                createViewModel(
+                    lastViewedRoute = SlowLastViewedRoute(ROUTE),
+                    deepLinkStore = deepLinkStore,
+                )
+
+            // Then
+            viewModel.uiState.test {
+                awaitItem()
+                runCurrent()
+
+                assertNull(deepLinkStore.pendingMatch.value)
+                advanceTimeBy(1_000)
+
+                assertNull(viewModel.uiState.value.selectedRouteNum)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+}
+
+private class SlowLastViewedRoute(
+    private val routeNum: String,
+) : LastViewedRouteRepository {
+    override suspend fun getLastViewedRoute(): String {
+        delay(100)
+        return routeNum
+    }
+
+    override suspend fun saveLastViewedRoute(routeNum: String?) = Unit
 }
 
 private class OnlyOneLineCatalogue(

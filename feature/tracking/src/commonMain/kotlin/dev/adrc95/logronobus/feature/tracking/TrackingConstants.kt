@@ -16,9 +16,10 @@
 
 package dev.adrc95.logronobus.feature.tracking
 
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinks
+
 object TrackingConstants {
     const val POSITIONS_REFRESH_INTERVAL_MILLIS = 5_000L
     const val BUSES_NOT_LISTED_MILLIS = 8_000L
-    const val AT_STOP_METRES = 60.0
-    const val AT_STOP_MOVE_METRES = 25.0
+    const val DEEP_LINK: String = "${DeepLinks.BASE_URI}tracking"
 }

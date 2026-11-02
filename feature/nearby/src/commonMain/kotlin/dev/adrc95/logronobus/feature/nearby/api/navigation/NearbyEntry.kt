@@ -19,10 +19,16 @@ package dev.adrc95.logronobus.feature.nearby.api.navigation
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
+import dev.adrc95.logronobus.feature.nearby.NearbyConstants
 import dev.adrc95.logronobus.feature.nearby.NearbyRoute
 import dev.adrc95.logronobus.feature.stops.api.navigation.StopSheetNavKey
 
-fun EntryProviderScope<NavKey>.nearbyEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.nearbyEntry(
+    navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
+) {
+    deepLinks.register(NearbyConstants.DEEP_LINK, NearbyNavKey.serializer())
     entry<NearbyNavKey> {
         NearbyRoute(
             onStopClick = { stop -> navigator.navigate(StopSheetNavKey(stop.stopRef)) },

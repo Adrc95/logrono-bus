@@ -19,10 +19,16 @@ package dev.adrc95.logronobus.feature.scan.api.navigation
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import dev.adrc95.logronobus.core.navigation.Navigator
+import dev.adrc95.logronobus.core.navigation.deeplink.DeepLinkRegistry
+import dev.adrc95.logronobus.feature.scan.ScanConstants
 import dev.adrc95.logronobus.feature.scan.ScanRoute
 import dev.adrc95.logronobus.feature.stops.api.navigation.StopSheetNavKey
 
-fun EntryProviderScope<NavKey>.scanEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.scanEntry(
+    navigator: Navigator,
+    deepLinks: DeepLinkRegistry,
+) {
+    deepLinks.register(ScanConstants.DEEP_LINK, ScanNavKey.serializer())
     entry<ScanNavKey> {
         ScanRoute(
             sheetOpen = navigator.currentKey is StopSheetNavKey,
