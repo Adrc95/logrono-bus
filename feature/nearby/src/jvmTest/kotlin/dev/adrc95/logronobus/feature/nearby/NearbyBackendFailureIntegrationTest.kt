@@ -16,6 +16,7 @@
 
 package dev.adrc95.logronobus.feature.nearby
 
+import androidx.lifecycle.viewModelScope
 import dev.adrc95.logronobus.core.data.repository.LocationRepositoryImpl
 import dev.adrc95.logronobus.core.device.JvmLocationProvider
 import dev.adrc95.logronobus.core.domain.usecase.GetCurrentLocationUseCase
@@ -31,6 +32,8 @@ import dev.adrc95.logronobus.core.testing.nonsenseBackend
 import dev.adrc95.logronobus.feature.nearby.model.NearbyState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.resetMain
@@ -61,6 +64,7 @@ class NearbyBackendFailureIntegrationTest {
             waitForRetries()
             assertEquals(NearbyState.Unavailable, nearby.uiState.value.nearbyState)
             watching.cancel()
+            nearby.viewModelScope.coroutineContext[Job]?.cancelAndJoin()
         }
     }
 
@@ -73,6 +77,7 @@ class NearbyBackendFailureIntegrationTest {
             nearby.reload()
             waitForRetries()
             watching.cancel()
+            nearby.viewModelScope.coroutineContext[Job]?.cancelAndJoin()
         }
     }
 

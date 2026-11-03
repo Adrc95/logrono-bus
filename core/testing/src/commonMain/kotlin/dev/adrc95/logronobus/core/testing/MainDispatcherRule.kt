@@ -27,7 +27,6 @@ import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 
@@ -60,11 +59,11 @@ class MainDispatcherRule(
     fun tearDown() {
         scopes.forEach(CoroutineScope::cancel)
         scopes.clear()
-        // A ViewModel's scope is not tracked and outlives the test body, so its WhileSubscribed
-        // timeouts are still scheduled here. Running them while Main is still installed keeps the
-        // cancellation from failing on the dispatcher that resetMain removes, which surfaces as an
-        // uncaught exception in the next test.
+        // Run what the test left scheduled, then leave Main installed instead of resetting it: a
+        // ViewModel scope that outlives the test body would otherwise resume on a dispatcher that no
+        // longer exists, and that uncaught exception is reported against the following test. With
+        // Main still present the late work lands on this scheduler, which nobody advances, so it is
+        // harmless. setUp installs the next test's dispatcher.
         runCatching { testDispatcher.scheduler.advanceUntilIdle() }
-        Dispatchers.resetMain()
     }
 }

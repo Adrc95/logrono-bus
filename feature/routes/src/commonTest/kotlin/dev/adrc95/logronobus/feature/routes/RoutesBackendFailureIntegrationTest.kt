@@ -16,6 +16,7 @@
 
 package dev.adrc95.logronobus.feature.routes
 
+import androidx.lifecycle.viewModelScope
 import dev.adrc95.logronobus.core.data.repository.TrackedTripRepositoryImpl
 import dev.adrc95.logronobus.core.domain.usecase.GetFavouriteStopsUseCase
 import dev.adrc95.logronobus.core.domain.usecase.GetLastViewedRouteUseCase
@@ -36,6 +37,9 @@ import dev.adrc95.logronobus.core.testing.failingBackend
 import dev.adrc95.logronobus.core.testing.nonsenseBackend
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -60,6 +64,7 @@ class RoutesBackendFailureIntegrationTest {
             val routes = routesOn(TestBus(injectedHttpClient = failingBackend()))
             routes.selectStop("8460B522331")
             waitForRetries()
+            routes.viewModelScope.coroutineContext[Job]?.cancelAndJoin()
             assertTrue(
                 routes.uiState.value.routeStopRows
                     .isEmpty(),
@@ -71,8 +76,10 @@ class RoutesBackendFailureIntegrationTest {
     fun `given a backend answering nonsense when a stop's departures are asked for then it is survivable too`() {
         runTest {
             val repository = TestBus(injectedHttpClient = nonsenseBackend())
-            routesOn(repository).selectRoute("401")
+            val routes = routesOn(repository)
+            routes.selectRoute("401")
             waitForRetries()
+            routes.viewModelScope.coroutineContext[Job]?.cancelAndJoin()
         }
     }
 

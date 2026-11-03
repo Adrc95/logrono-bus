@@ -16,6 +16,7 @@
 
 package dev.adrc95.logronobus.feature.nearby
 
+import androidx.lifecycle.viewModelScope
 import app.cash.turbine.test
 import dev.adrc95.logronobus.core.domain.repository.CatalogueRepository
 import dev.adrc95.logronobus.core.domain.repository.FavouritesRepository
@@ -121,7 +122,7 @@ class NearbyViewModelTest {
             getFavourites = GetFavouriteStopsUseCase(favourites),
             toggleFavouriteUseCase = ToggleFavouriteUseCase(favourites),
             getRoutes = GetRoutesUseCase(catalogue),
-        )
+        ).also { viewModel -> mainDispatcherRule.track(viewModel.viewModelScope) }
     }
 
     @Test

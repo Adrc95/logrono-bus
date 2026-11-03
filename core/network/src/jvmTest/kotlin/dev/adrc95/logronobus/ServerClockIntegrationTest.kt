@@ -35,6 +35,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -43,6 +44,9 @@ import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 import java.time.Instant as JavaInstant
+
+private val HTTP_DATE_FORMAT =
+    DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US)
 
 class ServerClockIntegrationTest {
     @AfterTest
@@ -61,10 +65,7 @@ class ServerClockIntegrationTest {
             )
         }
 
-    private fun dateHeader(epochMs: Long): String =
-        DateTimeFormatter.RFC_1123_DATE_TIME.format(
-            JavaInstant.ofEpochMilli(epochMs).atZone(ZoneOffset.UTC),
-        )
+    private fun dateHeader(epochMs: Long): String = HTTP_DATE_FORMAT.format(JavaInstant.ofEpochMilli(epochMs).atZone(ZoneOffset.UTC))
 
     private fun fleetOut(recordedIso: String) =
         """{"result":{"activities":[
